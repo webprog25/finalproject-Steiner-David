@@ -3,7 +3,7 @@ Final Project
 ====================
 
 Project Title: <TODO>
-Your Name: <TODO>
+Your Name: David Steiner
 
 Overview
 --------

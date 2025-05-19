@@ -1,26 +1,46 @@
 Webprog Final Project Proposal
 =============================
-<TODO: Fill in this proposal template and remove the TODOs (including the < >).>
 
-Project Title: <TODO: Come up with a name, or a short description will do>
-Your Name: <TODO>
+Project Title: Plant Pal – A Virtual Greenhouse
+Your Name: David Steiner
 
 Description
 -----------
-<TODO: Tell us about your project idea. What will it do, how will it work. A paragraph or two should do. It may be helpful to include a "feature list" that details what users will be able to do in the app.>
+Plant Pal is a small web application that keeps track of every houseplant you own, reminds you when each one needs water, and lets you update that status with a single tap.
+
+Key features
+
+* Dashboard: responsive grid of “plant cards” showing photo, nickname, species, last-watered date, and a color badge (green → yellow → red) that changes automatically as the watering deadline approaches.
+
+* Add Plant: upload or paste an image, set species and watering frequency (days).
+
+* Plant Detail / Edit: mark “Watered Today”, edit info, or delete the plant.
+
+* RESTful API: GET /api/plants, POST /api/plants, PATCH /api/plants/:id, DELETE /api/plants/:id (JSON in / out).
+
+* Data persistence: all plants stored in a MongoDB collection so they survive page reloads and server restarts.
 
 Milestone(s)
 ------------
-<TODO: Talk a bit about the process you want to take, and what you'd like to have done by the check-in milestone. I won't hold you to that milestone; we just want you to be thinking about the order you'll be working on things. If there are any current or anticipated blockers (e.g. needing to get data from an external source or getting feedback on something), please identify those here too.>
+These are very trivial milestones since this is only the proposal of the project and I will "improve" them if my project idea is aproved.
+
+*Week 1*  Set up repo, Express server skeleton, connect to local MongoDB.  
+*Week 2*  Implement all API routes and test them with Postman.  
+*Week 3*  Create static HTML/CSS dashboard plus hard‑coded sample cards.  
+*Week 4*  Wire frontend to backend (list, add, delete, edit, water action).  
+*Week 5*  Add optional Google Sign‑In (if time), polish UI, make responsive, accessibility pass, write README & screencast. 
 
 External libraries and code
 ---------------------------
-<TODO: Identify any external libraries or code you plan to use, and describe how it fits into your project. It's fine to say "None" here, and you can change your mind later.>
+* date‑fns – lightweight helper for “days until dry” math.  
+* Chart.js – optional, only if I add a future watering‑history chart.
+* Google Identity Services – optional stretch goal for one‑tap sign‑in.    
 
 Collaboration and resources
 ---------------------------
-<TODO: Identify any sources you plan to consult, except for code listed above. This might include getting feedback from users or getting data from an external source.>
+* OpenFarm plant‑info API (read‑only) if I add species autofill.  
+* Feedback from a few plant‑owner friends to test usability.  
 
 Anything else?
 -------------
-<TODO: Anything else you'd like me to know?>
+
