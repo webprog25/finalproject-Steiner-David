@@ -1,13 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <title>Final Project</title>
+    <meta charset="UTF-8" />
+    <title>Plant Pal</title>
 
-    <!-- This line provides automatic page and style reloading when files change -->
+    <!-- Automatic page and style reloading when files change -->
     <script type="module" src="/lib/client/updater.js"></script>
+
+    <link rel="stylesheet" href="styles.css" />
+    <script type="module" src="index.js"></script>
   </head>
+
   <body>
-    <h1>Hello, world!</h1>
+    <header class="taskbar">
+      <h1 class="app-title">Plant Pal – A Virtual Greenhouse</h1>
+
+      <div class="add-plant-form">
+        <input
+          id="newPlantName"
+          placeholder="Enter plant name…"
+        />
+        <input
+          id="newPlantSpecies"
+          placeholder="Species (e.g. Ficus)"
+        />
+        <input
+          id="newPlantFreq"
+          type="number"
+          min="1"
+          value="7"
+          placeholder="Water every N days"
+        />
+        <button id="addPlantBtn">Add new Plant</button>
+      </div>
+    </header>
+
+    <main id="plantDashboard"></main>
+
+    <article class="template plant-card">
+      <span class="plant-badge"></span>
+
+      <img class="plant-image" src="" alt="Plant photo" />
+
+      <h2 class="plant-name"></h2>
+      <h3 class="plant-species"></h3>
+
+      <p class="last-watered">
+        Last watered: <span></span>
+      </p>
+      <p class="plant-info">
+        <span class="days-left"></span> days until next watering
+      </p>
+
+      <div class="card-actions">
+        <button class="edit-plant">
+          <img src="icons/edit.svg" alt="Edit" />
+        </button>
+        <button class="delete-plant">
+          <img src="icons/delete.svg" alt="Delete" />
+        </button>
+      </div>
+
+      <button class="water-now">💧 Water Now</button>
+    </article>
   </body>
 </html>

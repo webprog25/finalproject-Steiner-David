@@ -2,7 +2,7 @@
 Final Project
 ====================
 
-Project Title: <TODO>
+Project Title: Plant Pal
 Your Name: David Steiner
 
 Overview
