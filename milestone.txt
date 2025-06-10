@@ -1,29 +1,38 @@
 Final Project Milestone
 ==============================
 
-Project Title: <TODO>
+Project Title: Plant Pal
 Your Name: David Steiner
 
 Overview
 --------
-<TODO: Let me know how things are going. What have you explored, looked into, worked on, and tried so far? What do you have left to do? Are you running into any particular difficulties or blockers?>
+I have implemented the frontend interface including a responsive grid of plant cards, sample data, add-plant form, and date‐difference logic for watering deadlines. Due to limited time, only the frontend has been implemented
 
 Project Changes
 ---------------
-<TODO: If you are planning to change something about your project (scope, features, etc.) from your proposal, please let me know what changes you're planning to make.>
+No major changes to the original proposal; the core scope remains the same. 
 
 Implementation Details
 ----------------------
-<TODO: Describe how you will implement (or have implemented) a specific feature or part of the project. Include specific details about the frontend (e.g. what classes you'll have and how the user interface will work) and backend (e.g. what API endpoints you'll use and how you'll store the data). As with the proposal, this can change later; I just want to make sure you've thought through some of these details.>
+* Responsive grid of plant cards showing photo, nickname, species, and watering status that updates as thresholds approach.
+* Store plant data in MongoDB
+* Add Plant form: allow uploading or pasting an image, entering species and watering frequency (days) and saving via fetch calls to the backend API, which persists to MongoDB.
+* Watering logic: use date-fns to calculate “days until next watering” based on last watered date and frequency; update UI dynamically on load or at intervals.
+* Mark as watered: send a PUT request to update the lastWatered date in MongoDB, then refresh the display.
+* Edit and delete: allow updating plant details or removing a plant by sending PUT/DELETE requests to the API, which updates the MongoDB collection.
 
 External libraries and code
 ---------------------------
-<TODO: Identify any external libraries or code you are using or plan to use, and describe how it fits into your project. Please include everything even if you already listed it in your proposal.>
+Same as in the proposal:
+* date‑fns – lightweight helper for “days until dry” math.  
+* Chart.js – optional, only if I add a future watering‑history chart.
+* Google Identity Services – optional stretch goal for one‑tap sign‑in.  
 
 Collaboration and resources
 ---------------------------
-<TODO: Identify any sources you have consulted or plan to consult, except for code listed above. Include those you listed previously in your proposal.>
+Same as in the proposal:
+* OpenFarm plant‑info API (read‑only) if I add species autofill.  
+* Feedback from a few plant‑owner friends to test usability.
 
 Anything else?
 --------------
-<TODO: Anything else you'd like me to know?>
