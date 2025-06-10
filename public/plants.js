@@ -21,6 +21,11 @@ function daysBetween(d1, d2) {
     return Math.floor((d2 - d1) / msPerDay);
 }
 
+function formatDateDMY(dateStr) {
+  const [year, month, day] = dateStr.split("-");
+  return `${day}/${month}/${year}`;
+}
+
 export function renderPlants() {
     samplePlants.forEach(createPlantCard);  
   
@@ -42,7 +47,10 @@ export function createPlantCard(p) {
     card.querySelector(".plant-species").textContent = p.species;
 
     // Last watered
-    card.querySelector(".last-watered span").textContent = p.lastWatered;
+    const lastWateredSpan = card.querySelector(".last-watered span");
+    if (lastWateredSpan) {
+      lastWateredSpan.textContent = formatDateDMY(p.lastWatered);
+    }
 
     // Days until next water
     const last = new Date(p.lastWatered);
@@ -59,9 +67,32 @@ export function createPlantCard(p) {
     else clr = "tomato";
     card.querySelector(".plant-badge").style.backgroundColor = clr;
 
-    // Water-Now handler
     card.querySelector(".water-now").addEventListener("click", () => {
-    card.querySelector(".days-left").textContent = p.frequencyDays;
+    const today = new Date();
+
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth()+1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    const todayStr = `${yyyy}-${mm}-${dd}`;
+    p.lastWatered = todayStr;
+
+    
+    const lastWateredElem = card.querySelector(".last-watered span");
+    if (lastWateredElem) {
+        lastWateredElem.textContent = formatDateDMY(p.lastWatered);
+    }
+
+    const newDaysLeft = p.frequencyDays;
+    const daysLeftElem = card.querySelector(".days-left");
+    if (daysLeftElem) {
+        daysLeftElem.textContent = newDaysLeft;
+    }
+
+    const badge = card.querySelector(".plant-badge");
+    if (badge) {
+        badge.style.backgroundColor = "green";
+    }
+
     });
 
     // Delete button

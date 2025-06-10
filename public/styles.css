@@ -64,6 +64,7 @@ body {
 }
 
 .plant-card:not(.template){
+  position: relative;
   background-color: #FFFFFF;
   border: 1px solid #E0E3DA;
   border-radius: 1rem;
