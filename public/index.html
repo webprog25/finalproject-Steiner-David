@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Plant Pal</title>
 
     <!-- Automatic page and style reloading when files change -->
@@ -12,10 +13,16 @@
   </head>
 
   <body>
+    <header>
+      <nav class="site-nav">
+        <a href="index.html" class="nav-logo">Plant Pal</a>
+        <div class="nav-links">
+          <a href="add.html" class="nav-link add">Add Plant</a>
+        </div>
+      </nav>
+    </header>
     <main>
-      <h1>My Plants</h1>
       <section id="grid" class="plant-grid"></section>
-      <a href="add.html" class="add-button">+ Add Plant</a>
     </main>
   </body>
 </html>

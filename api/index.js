@@ -18,8 +18,8 @@ const initApi = async (app) => {
   Plants = db.collection(PLANTS_COLL);
 };
 
-/* Interpret request bodies as JSON and store them in req.body */
-myApi.use(bodyParser.json());
+/* Interpret request bodies as JSON (up to 10 MB) and store them in req.body */
+myApi.use(bodyParser.json({ limit: "10mb" }));
 
 myApi.get("/plants", async (req, res) => {
   const all = await Plants.find().toArray();
