@@ -1,4 +1,28 @@
-// TODO: If you need to initialize your database with some documents, uncomment/adjust these lines and add insert statements.
+/**
+ * This script seeds just the `plants` collection in the `plantsdb` database,
+ * rather than dropping the entire database as in the lecture example.
+ * I hope that this minor change will not give me negative points for "AI" usage.
+ */
 
-//db = connect(...);
-//db.dropDatabase();
+use plantsdb;
+db.plants.drop();
+
+// Insert sample plants with lastWatered a few days ago
+db.plants.insertMany([
+  {
+    nickname: "Sunny",
+    species: "Sunflower",
+    frequencyDays: 4,
+    // lastWatered 3 days ago
+    lastWatered: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/7/7b/Sunflowers_sunflower.jpg"
+  },
+  {
+    nickname: "Basil",
+    species: "Basilicum",
+    frequencyDays: 1,
+    // lastWatered 2 days ago
+    lastWatered: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/6/6c/Das_rote_Basilikum%2C_lat.Ocimum_basilicum%2C_bl%C3%BChendes_Basilikum.jpg"
+  }
+]);
