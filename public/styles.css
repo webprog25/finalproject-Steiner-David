@@ -1,193 +1,58 @@
 body {
-  background-color: #F5F7F3;          
-  color: #3A4A38;                      
-  font-family: Georgia, serif;         
+  margin: 0;
+  font-family: sans-serif;
 }
 
-.template,
-.hidden {
-  display: none;
+main {
+  padding: 1rem;
 }
 
-.taskbar {
-  display: flex;                    
-  justify-content: space-between;   
-  align-items: center;              
-  background: linear-gradient(135deg, #6B8E23 0%, #8FBC8F 100%);
-  color: white;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-  padding: 1rem 5rem;
+.plant-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.plant-card {
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  width: calc(33% - 1rem);
   box-sizing: border-box;
 }
 
-.taskbar .app-title {
-  font-family: "Palatino Linotype", Palatino, serif;
-  font-size: 2rem;
-  letter-spacing: 1px;
-  color: #FFFFFF;
+.plant-card img {
+  width: 100%;
+  border-radius: 0.5rem;
 }
 
-.add-plant-form {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.add-plant-form input#newPlantName {
-  padding: 0.5rem 0.75rem;
-  font-size: 1rem;
-  border: 1px solid #ccc;
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
   border-radius: 0.25rem;
-  width: 12rem;
+  font-size: 0.875rem;
+  color: #fff;
 }
 
-.add-plant-form button#addPlantBtn {
-  background-color: #4CAF50;
-  color: white;
-  border: none;
+.badge.green {
+  background-color: #4caf50;
+}
+
+.badge.yellow {
+  background-color: #ffeb3b;
+  color: #000;
+}
+
+.badge.red {
+  background-color: #f44336;
+}
+
+.add-button {
+  display: inline-block;
+  margin-top: 1rem;
   padding: 0.5rem 1rem;
+  background-color: #2196f3;
+  color: #fff;
+  text-decoration: none;
   border-radius: 0.25rem;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.2s;
-}
-.add-plant-form button#addPlantBtn:hover {
-  background-color: #45A049;
-}
-
-#plantDashboard {
-  display: flex;        
-  flex-wrap: wrap;      
-  padding: 2rem 5rem;
-  gap: 2rem;
-  justify-content: center;
-}
-
-.plant-card:not(.template){
-  position: relative;
-  background-color: #FFFFFF;
-  border: 1px solid #E0E3DA;
-  border-radius: 1rem;
-  padding: 1rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  transition: transform 0.2s, box-shadow 0.2s;
-  width: 220px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.plant-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-
-.plant-image {
-  width: 160px;
-  height: 160px;
-  object-fit: cover;
-  border-radius: 50%;            
-  border: 4px solid #E0E3DA;
-  margin-bottom: 0.75rem;
-}
-
-.plant-name {
-  font-size: 1.25rem;
-  margin: 0.5rem 0;
-  color: #2F5233;
-}
-
-.plant-info {
-  font-size: 0.9rem;
-  margin-bottom: 1rem;
-  color: #5A6B56;
-}
-
-.water-now {
-  background-color: #1E90FF;    
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 0.25rem;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background-color 0.2s, transform 0.1s;
-}
-.water-now:hover {
-  background-color: #1C86EE;    
-  transform: translateY(-1px);
-}
-
-.plant-species {
-  margin: 0;
-  font-size: 1rem;
-  color: #5A6B56;
-}
-.last-watered {
-  font-size: 0.85rem;
-  color: #777;
-  margin: 0.25rem 0;
-}
-
-/* Colored badge in top‐left corner */
-.plant-card:not(.template) .plant-badge {
-  position: absolute;
-  top: 0.75rem;
-  left: 0.75rem;
-  width: 1rem;
-  height: 1rem;
-  border-radius: 50%;
-  background-color: green; /* updated by JS */
-}
-
-/* Edit/Delete icon buttons */
-.card-actions {
-  position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
-  display: flex;
-  gap: 0.25rem;
-  opacity: 0;
-  transition: opacity 0.2s;
-}
-.plant-card:not(.template):hover .card-actions {
-  opacity: 1;
-}
-.card-actions button {
-  background: none;
-  border: none;
-  padding: 0.25rem;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-.card-actions button img {
-  width: 1rem;
-  height: 1rem;
-  display: block;
-}
-
-.add-plant-form input#newPlantSpecies,
-.add-plant-form input#newPlantFreq {
-  padding: 0.5rem 0.75rem;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 0.25rem;
-  width: 10rem;
-}
-.add-plant-form input#newPlantFreq {
-  width: 6rem; 
-}
-
-/* Mobile stacking */
-@media (max-width: 600px) {
-  #plantDashboard {
-    flex-direction: column;
-    align-items: center;
-  }
-  .add-plant-form {
-    flex-direction: column;
-    gap: 0.25rem;
-  }
 }

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Plant</title>
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- Dev hot-reload + add-plant script -->
+    <script type="module" src="/lib/client/updater.js"></script>
+    <script type="module" src="js/add-plant.js"></script>
+  </head>
+  <body>
+    <main>
+      <h1>Add a New Plant</h1>
+      <form id="plant-form">
+        <label for="nickname">
+          Nickname
+          <input id="nickname" name="nickname" type="text" required />
+        </label>
+
+        <label for="species">
+          Species
+          <input id="species" name="species" type="text" required />
+        </label>
+
+        <label for="frequency">
+          Watering Frequency (days)
+          <input
+            id="frequency"
+            name="frequency"
+            type="number"
+            min="1"
+            required
+          />
+        </label>
+
+        <label for="image">
+          Image File
+          <input
+            id="image"
+            name="image"
+            type="file"
+            accept="image/*"
+          />
+        </label>
+
+        <label for="imageUrl">
+          or Image URL
+          <input id="imageUrl" name="imageUrl" type="url" />
+        </label>
+
+        <button type="submit">Add Plant</button>
+      </form>
+    </main>
+  </body>
+</html>
