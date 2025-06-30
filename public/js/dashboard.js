@@ -1,4 +1,3 @@
-// ===== EDIT MODAL SHARED HANDLERS =====
 const modal     = document.getElementById("edit-modal");
 const form      = document.getElementById("edit-form");
 const cancelBtn = document.getElementById("edit-cancel");
@@ -112,7 +111,7 @@ class PlantCard {
   }
 
   async handleDelete() {
-    if (!confirm(`Delete "${this.plant.nickname}"?`)) return;
+    if (!confirm(`Do you really want to delete "${this.plant.nickname}"?`)) return;
     await fetch(`/api/plants/${this.plant._id}`, { method: "DELETE" });
     this.element.remove();
   }
