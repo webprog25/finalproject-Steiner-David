@@ -14,6 +14,11 @@ function setupFileUploader() {
 
   // When a file is selected or dropped, show preview & clear button
   const showFile = (file) => {
+    if (!file.type.startsWith("image/")) {
+      alert("Only image files are allowed. Please select a .jpg, .png, or similar.");
+      input.value = "";
+      return;
+    }
     const url = URL.createObjectURL(file);
     preview.src = url;
     preview.hidden = false;
@@ -39,6 +44,10 @@ function setupFileUploader() {
     uploader.classList.remove("dragover");
     const file = e.dataTransfer.files[0];
     if (file) {
+      if (!file.type.startsWith("image/")) {
+        alert("Only image files are allowed. Please drop a .jpg, .png, or similar.");
+        return;
+      }
       input.files = e.dataTransfer.files;
       showFile(file);
     }
