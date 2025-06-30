@@ -43,50 +43,50 @@ class PlantCard {
     return "red";
   }
 
-render() {
-  const article = document.createElement("article");
-  article.className = "plant-card";
+  render() {
+    const article = document.createElement("article");
+    article.className = "plant-card";
 
-  // Compute badge text & color
-  const daysAgo = Math.round(
-    (Date.now() - new Date(this.plant.lastWatered)) /
-      (1000 * 60 * 60 * 24)
-  );
-  const color = this.getBadgeColor();
+    // Compute badge text & color
+    const daysAgo = Math.round(
+      (Date.now() - new Date(this.plant.lastWatered)) /
+        (1000 * 60 * 60 * 24)
+    );
+    const color = this.getBadgeColor();
 
-  const lastDate = new Date(this.plant.lastWatered).toLocaleDateString(
-    undefined,
-    { year: "numeric", month: "short", day: "numeric" }
-  );
+    const lastDate = new Date(this.plant.lastWatered).toLocaleDateString(
+      undefined,
+      { year: "numeric", month: "short", day: "numeric" }
+    );
 
-  article.innerHTML = `
-    <!-- Top actions (edit/delete) -->
-    <div class="card-actions-top">
-      <img src="icons/edit.svg" class="btn-edit" title="Edit" />
-      <img src="icons/delete.svg" class="btn-delete" title="Delete" />
-    </div>
+    article.innerHTML = `
+      <!-- Top actions (edit/delete) -->
+      <div class="card-actions-top">
+        <img src="icons/edit.svg" class="btn-edit" title="Edit" />
+        <img src="icons/delete.svg" class="btn-delete" title="Delete" />
+      </div>
 
-    <img src="${this.plant.imageUrl}" alt="${this.plant.nickname}" />
+      <img src="${this.plant.imageUrl}" alt="${this.plant.nickname}" />
 
-    <div class="card-content">
-      <h2>${this.plant.nickname}</h2>
-      <p class="species">Species: ${this.plant.species}</p>
-      <p class="frequency">Watering Frequency: ${this.plant.frequencyDays} days</p>
-      <span class="badge ${color}" title="Last watered: ${lastDate}">
-        ${daysAgo} days since last watering
-      </span>
-    </div>
+      <div class="card-content">
+        <h2>${this.plant.nickname}</h2>
+        <p class="species">Species: ${this.plant.species}</p>
+        <p class="frequency">Watering Frequency: ${this.plant.frequencyDays} days</p>
+        <span class="badge ${color}" title="Last watered: ${lastDate}">
+          ${daysAgo} days since last watering
+        </span>
+      </div>
 
-    <!-- Bottom actions: water button + badge -->
-    <div class="card-actions-bottom">
-      <button class="btn-water" title="Water now">
-        <img src="icons/water.svg" alt="" />
-        Water now
-      </button>
-    </div>
-  `;
-  return article;
-}
+      <!-- Bottom actions: water button + badge -->
+      <div class="card-actions-bottom">
+        <button class="btn-water" title="Water now">
+          <img src="icons/water.svg" alt="" />
+          Water now
+        </button>
+      </div>
+    `;
+    return article;
+  }
 
   attachHandlers() {
     const btnWater = this.element.querySelector(".btn-water");
