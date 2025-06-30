@@ -24,5 +24,29 @@ db.plants.insertMany([
     // lastWatered 2 days ago
     lastWatered: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/6/6c/Das_rote_Basilikum%2C_lat.Ocimum_basilicum%2C_bl%C3%BChendes_Basilikum.jpg"
+  },
+  {
+    nickname: "Spike",
+    species: "Desert Cactus",
+    frequencyDays: 14,
+    // lastWatered 20 days ago
+    lastWatered: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000),
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/2/21/Saguaro_Cactus_With_Desert_Butte_In_Background_At_Springtime_In_AZ.jpg"
+  },
+  {
+    nickname: "Orchy",
+    species: "Phalaenopsis Orchid",
+    frequencyDays: 7,
+    // lastWatered 2 days ago
+    lastWatered: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
+    imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQE6VEbRsJyvQUwOT8H4vGev8my_IuUyW8Fyg&s"
+  },
+  {
+    nickname: "Aloe",
+    species: "Aloe Vera",
+    frequencyDays: 10,
+    // lastWatered 8 days ago
+    lastWatered: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000),
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/3/3d/Aloevera_plant.jpg"
   }
 ]);

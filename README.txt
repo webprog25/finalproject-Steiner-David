@@ -37,6 +37,8 @@ Features
 
 * Delete: remove unwanted plants with a confirmation prompt.
 
+* Mobile-friendly: responsive grid and forms collapse to a single column on phones.
+
 Collaboration and libraries
 ---------------------------
 * I tried to stick as closely as possible to the lecture material.
