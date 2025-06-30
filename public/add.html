@@ -19,44 +19,50 @@
       </nav>
     </header>
     <main>
-      <form id="plant-form">
-        <label for="nickname">
-          Nickname
+      <form id="plant-form" class="add-form">
+        <div class="form-row">
+          <label for="nickname">Nickname</label>
           <input id="nickname" name="nickname" type="text" required />
-        </label>
-
-        <label for="species">
-          Species
+        </div>
+        <div class="form-row">
+          <label for="species">Species</label>
           <input id="species" name="species" type="text" required />
-        </label>
-
-        <label for="frequency">
-          Watering Frequency (days)
+        </div>
+        <div class="form-row">
+          <label for="frequency">Watering Frequency (days)</label>
           <input
             id="frequency"
             name="frequency"
             type="number"
             min="1"
+            step="1"
             required
           />
-        </label>
-
-        <label for="image">
-          Image File
-          <input
-            id="image"
-            name="image"
-            type="file"
-            accept="image/*"
-          />
-        </label>
-
-        <label for="imageUrl">
-          or Image URL
+        </div>
+        <div class="form-row">
+          <label>Image</label>
+          <div class="file-uploader" id="file-uploader">
+            <button type="button" class="btn-clear" title="Clear selection" hidden>✕</button>
+            <p>Drop image here or click to select</p>
+            <img id="file-preview" src="" alt="" hidden />
+            <input
+              id="image"
+              name="image"
+              type="file"
+              accept="image/*"
+              hidden
+            />
+          </div>
+        </div>
+        <div class="form-row url-row">
+          <label for="imageUrl">or Image URL</label>
           <input id="imageUrl" name="imageUrl" type="url" />
-        </label>
-
-        <button type="submit">Add Plant</button>
+        </div>
+        <p class="form-note">
+          Please choose <strong>either</strong> a file <strong>or</strong> a URL, not
+          both.
+        </p>
+        <button type="submit" class="submit-button">Add Plant</button>
       </form>
     </main>
   </body>

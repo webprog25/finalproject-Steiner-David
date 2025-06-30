@@ -1,3 +1,60 @@
+// File uploader 
+function setupFileUploader() {
+  const uploader = document.getElementById("file-uploader");
+  const input    = uploader.querySelector("input[type=file]");
+  const preview  = document.getElementById("file-preview");
+  const clearBtn = uploader.querySelector(".btn-clear");
+  const placeholder = uploader.querySelector("p");
+
+  // Open file picker on click (but not when clicking “clear”)
+  uploader.addEventListener("click", (e) => {
+    if (e.target === clearBtn) return;
+    input.click();
+  });
+
+  // When a file is selected or dropped, show preview & clear button
+  const showFile = (file) => {
+    const url = URL.createObjectURL(file);
+    preview.src = url;
+    preview.hidden = false;
+    clearBtn.hidden = false;
+    placeholder.hidden = true;
+  };
+
+  input.addEventListener("change", () => {
+    const file = input.files[0];
+    if (!file) return;
+    showFile(file);
+  });
+
+  uploader.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    uploader.classList.add("dragover");
+  });
+  uploader.addEventListener("dragleave", () => {
+    uploader.classList.remove("dragover");
+  });
+  uploader.addEventListener("drop", (e) => {
+    e.preventDefault();
+    uploader.classList.remove("dragover");
+    const file = e.dataTransfer.files[0];
+    if (file) {
+      input.files = e.dataTransfer.files;
+      showFile(file);
+    }
+  });
+
+  // Clear selection
+  clearBtn.addEventListener("click", (e) => {
+    e.stopPropagation();         
+    input.value = "";            
+    preview.src = "";
+    preview.hidden = true;       
+    clearBtn.hidden = true;      
+    placeholder.hidden = false;
+  });
+}
+
 class PlantForm {
   constructor(form) {
     this.form = form;
@@ -9,10 +66,22 @@ class PlantForm {
     console.log("Form submit handler fired");
     const data = new FormData(this.form);
 
-    let imageUrl = data.get("imageUrl");
     const file = data.get("image");
-    if (file && file.size) {
-      console.log("File selected:", file.name, file.size, "bytes");
+    const url  = data.get("imageUrl").trim();
+    const hasFile = file && file.size > 0;
+    const hasUrl  = url !== "";
+
+    if (hasFile && hasUrl) {
+      alert("Please provide either an image file or a URL, not both.");
+      return;
+    }
+    if (!hasFile && !hasUrl) {
+      alert("Please upload an image file or provide an image URL.");
+      return;
+    }
+
+    let imageUrl = url;
+    if (hasFile) {
       imageUrl = await this.toDataURL(file);
     }
 
@@ -38,7 +107,6 @@ class PlantForm {
         alert("Error adding plant: " + (err.error || res.status));
         return;
       }
-      // Success!
       location.href = "index.html";
     } catch (err) {
       console.error("Fetch failed:", err);
@@ -56,10 +124,7 @@ class PlantForm {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  setupFileUploader();
   const form = document.getElementById("plant-form");
-  if (!form) {
-    console.error("Could not find #plant-form!");
-    return;
-  }
-  new PlantForm(form);
+  if (form) new PlantForm(form);
 });

@@ -36,7 +36,10 @@ class PlantCard {
 
       <!-- Bottom action (water) -->
       <div class="card-actions-bottom">
-        <img src="icons/water.svg" class="btn-water" title="Water" />
+        <button class="btn-water" title="Water now">
+          <img src="icons/water.svg" alt="" />
+          Water now
+        </button>
       </div>
     `;
     return article;
