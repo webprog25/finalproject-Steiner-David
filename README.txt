@@ -40,17 +40,20 @@ Features
 Collaboration and libraries
 ---------------------------
 * I tried to stick as closely as possible to the lecture material.
-  However, I had to use some things that were not covered in the lectures, or maybe I just missed it.
-  I tried to follow the lecture for my editing part, but I simply could not stand the way it looked, so I had to use modal.
-  The same will apply to some other parts of the code (drag-and-drop, css, 1 forEach, etc). If you punish me with negative points for this ("AI usage"), I will accept it, but I will not be happy about it because, to me, programming isn't just about sticking to the syntax of lectures. 
-  It is about trying things out, and sadly, in the current climate, this will seem like AI. Therefore, I have to accept these possible negative points, and I will not blame you because I learnt something, and that is more important to me than any grade. 
+* However, I had to use some things that were not covered in the lectures, or maybe I just missed it.
+* I tried to follow the lecture for my editing part, but I simply could not stand the way it looked, so I had to use modal.
+* The same will apply to some other parts of the code (drag-and-drop, css, 1 forEach, etc). 
+* If you punish me with negative points for this ("AI usage"), I will accept it, but I will not be happy about it because, to me, programming isn't just about sticking to the syntax of lectures. 
+* It is about trying things out, and sadly, in the current climate, this will seem like AI. 
+* Therefore, I have to accept these possible negative points, and I will not blame you because I learnt something, and that is more important to me than any grade. 
   
 * The idea behind the cards may seem similar to Frank Schneider's and my own project, "PokeBuild", from the "WebProjekt" course.
-  However, the cards in PokeBuild are not filled with user input like this project; they are filled with API data, and the data on the cards is fixed. Therefore, there is no editing as in this project.
-  Therefore, the two projects only share the 'card' theme, which I also found suitable for this project.
-  Furthermore, since you have access to the PokeBuild GitLab, you can check that I implemented the card idea two months ago in commit 'e8c69113' so I assume that this will not be a problem.
+* However, the cards in PokeBuild are not filled with user input like this project. 
+* They are filled with API data, and the data on the cards is fixed. Therefore, there is no editing as in this project.
+* Therefore, the two projects only share the 'card' theme, which I also found suitable for this project.
+* Furthermore, since you have access to the PokeBuild GitLab, you can check that I implemented the card idea two months ago in commit 'e8c69113' so I assume that this will not be a problem.
 
 * I did not use any other libraries because the strict 'only lecture or AI' grading policy scared me off.
-  However, I will continue to improve this website with non-lecture content because I have a personal use case for it.
-  If the 30th June deadline is not that strict, I will push it to this git repro. Please send me an email to confirm this.
+* However, I will continue to improve this website with non-lecture content because I have a personal use case for it.
+* If the 30th June deadline is not that strict, I will push it to this git repro. Please send me an email to confirm this.
 
