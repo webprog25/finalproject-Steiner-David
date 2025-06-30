@@ -11,9 +11,9 @@ Overview
 
 Running
 -------
-<TODO: In general, I should be able to `npm install` and `npm start` your project. If there is anything else we need to know about running your project, please let us know here.>
+Just use `npm install` and `npm start`
 
-Do I need to load data from init_db.mongodb? <TODO: Yes/No>
+Do I need to load data from init_db.mongodb? Yes
 
 Features
 --------

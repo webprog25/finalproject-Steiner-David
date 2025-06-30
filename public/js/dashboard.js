@@ -54,7 +54,6 @@ render() {
   );
   const color = this.getBadgeColor();
 
-  // Format last‐watered date for tooltip
   const lastDate = new Date(this.plant.lastWatered).toLocaleDateString(
     undefined,
     { year: "numeric", month: "short", day: "numeric" }
@@ -71,10 +70,10 @@ render() {
 
     <div class="card-content">
       <h2>${this.plant.nickname}</h2>
-      <p class="species">${this.plant.species}</p>
-      <p class="frequency">${this.plant.frequencyDays} days</p>
+      <p class="species">Species: ${this.plant.species}</p>
+      <p class="frequency">Watering Frequency: ${this.plant.frequencyDays} days</p>
       <span class="badge ${color}" title="Last watered: ${lastDate}">
-        ${daysAgo} days
+        ${daysAgo} days since last watering
       </span>
     </div>
 
