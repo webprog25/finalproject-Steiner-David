@@ -1,5 +1,6 @@
 import bodyParser from "body-parser";
 import express from "express";
+import cors from "cors"
 import { MongoClient, ObjectId } from "mongodb";
 
 const DATABASE_NAME = "plantsdb";
@@ -18,8 +19,9 @@ const initApi = async (app) => {
   Plants = db.collection(PLANTS_COLL);
 };
 
-/* Interpret request bodies as JSON (up to 10 MB) and store them in req.body */
-myApi.use(bodyParser.json({ limit: "10mb" }));
+/* Change limit like in the lecture example*/
+myApi.use(bodyParser.json({ limit: "20mb" }));
+myApi.use(cors());
 
 myApi.get("/plants", async (req, res) => {
   const all = await Plants.find().toArray();

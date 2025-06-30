@@ -397,6 +397,108 @@ input[type="file"]:focus {
   outline: none;
 }
 
+.modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.modal[hidden] {
+  display: none;
+}
+
+.modal-backdrop {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+  position: relative;
+  background: var(--color-white);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  width: 320px;
+  max-width: 90%;
+  z-index: 1;
+}
+
+.modal-content h2 {
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  color: var(--color-green);
+}
+
+.edit-form {
+  background-color: var(--color-white);
+  padding: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-gap: 1rem;
+  margin: 0;               
+}
+
+.edit-form .form-row {
+  display: flex;
+  flex-direction: column;
+}
+
+.edit-form label {
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+
+.edit-form input {
+  padding: 0.5rem;
+  border: 1px solid var(--color-gray-medium);
+  border-radius: 0.25rem;
+  font-size: 1rem;
+}
+
+.modal-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.modal-actions button[type="submit"],
+.modal-actions #edit-cancel {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.modal-actions button[type="submit"] {
+  background-color: var(--color-green);
+  color: var(--color-white);
+}
+
+.modal-actions button[type="submit"]:hover,
+.modal-actions button[type="submit"]:focus {
+  background-color: var(--color-green-light);
+}
+
+.modal-actions #edit-cancel {
+  background-color: var(--color-gray-medium);
+  color: var(--color-white);
+}
+
+.modal-actions #edit-cancel:hover,
+.modal-actions #edit-cancel:focus {
+  background-color: #999;
+}
+
 /* Responsive tweak: on very narrow screens, make it one column */
 @media (max-width: 480px) {
   .add-form {

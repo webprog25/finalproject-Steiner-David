@@ -1,3 +1,34 @@
+// ===== EDIT MODAL SHARED HANDLERS =====
+const modal     = document.getElementById("edit-modal");
+const form      = document.getElementById("edit-form");
+const cancelBtn = document.getElementById("edit-cancel");
+
+// Open and pre-fill the modal, then call onSave(updates) when submitted
+function openEditModal(plant, onSave) {
+  modal.hidden = false;
+  form.nickname.value      = plant.nickname;
+  form.species.value       = plant.species;
+  form.frequencyDays.value = plant.frequencyDays;
+  form.onsubmit = async (e) => {
+    e.preventDefault();
+    await onSave({
+      nickname:      form.nickname.value.trim(),
+      species:       form.species.value.trim(),
+      frequencyDays: Number(form.frequencyDays.value)
+    });
+    closeEditModal();
+  };
+}
+
+function closeEditModal() {
+  modal.hidden = true;
+}
+
+// Cancel or backdrop click closes without saving
+cancelBtn.addEventListener("click", closeEditModal);
+modal.querySelector(".modal-backdrop")
+     .addEventListener("click", closeEditModal);
+
 class PlantCard {
   constructor(plant) {
     this.plant = plant;
@@ -68,41 +99,14 @@ class PlantCard {
     setTimeout(() => button.classList.remove("pressed"), 300);
   }
 
-  handleEdit(button) {
-    // transform card-content into editable inputs
-    const content = this.element.querySelector(".card-content");
-    const [h2, sp, fq, badge] = content.children;
-
-    const inputName = document.createElement("input");
-    inputName.value = this.plant.nickname;
-    const inputSpec = document.createElement("input");
-    inputSpec.value = this.plant.species;
-    const inputFreq = document.createElement("input");
-    inputFreq.type = "number";
-    inputFreq.min  = "1";
-    inputFreq.value = this.plant.frequencyDays;
-
-    content.replaceChild(inputName, h2);
-    content.replaceChild(inputSpec, sp);
-    content.replaceChild(inputFreq, fq);
-
-    // swap icon to save
-    button.src = "icons/save.svg";
-    button.removeEventListener("click",  () => this.handleEdit(button));
-    button.addEventListener("click", async () => {
-      this.plant.nickname     = inputName.value;
-      this.plant.species      = inputSpec.value;
-      this.plant.frequencyDays= Number(inputFreq.value);
-
+  handleEdit() {
+    openEditModal(this.plant, async (updates) => {
       await fetch(`/api/plants/${this.plant._id}`, {
-        method:"PATCH",
-        headers:{"Content-Type":"application/json"},
-        body: JSON.stringify({
-          nickname: this.plant.nickname,
-          species:  this.plant.species,
-          frequencyDays: this.plant.frequencyDays
-        })
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updates)
       });
+      Object.assign(this.plant, updates);
       this.refresh();
     });
   }

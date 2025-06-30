@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Plant Pal</title>
+    <link rel="icon" type="image/svg+xml" href="icons/favicon.svg"/>
 
     <!-- Automatic page and style reloading when files change -->
     <script type="module" src="/lib/client/updater.js"></script>
@@ -24,5 +25,36 @@
     <main>
       <section id="grid" class="plant-grid"></section>
     </main>
+    <div id="edit-modal" class="modal" hidden>
+      <div class="modal-backdrop"></div>
+      <div class="modal-content">
+        <h2>Edit Plant</h2>
+        <form id="edit-form" class="edit-form">
+          <div class="form-row">
+            <label for="edit-nickname">Nickname</label>
+            <input id="edit-nickname" name="nickname" type="text" required />
+          </div>
+          <div class="form-row">
+            <label for="edit-species">Species</label>
+            <input id="edit-species" name="species" type="text" required />
+          </div>
+          <div class="form-row">
+            <label for="edit-frequency">Frequency (days)</label>
+            <input
+              id="edit-frequency"
+              name="frequencyDays"
+              type="number"
+              min="1"
+              step="1"
+              required
+            />
+          </div>
+          <div class="modal-actions">
+            <button type="submit">Save</button>
+            <button type="button" id="edit-cancel">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
   </body>
 </html>
