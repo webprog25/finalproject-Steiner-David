@@ -64,6 +64,14 @@ function setupFileUploader() {
   });
 }
 
+const API_KEY = window.API_KEY || localStorage.getItem("apiKey") || null;
+function apiRequest(method, path, body) {
+  const opts = { method, headers: { "Content-Type":"application/json" } };
+  if (API_KEY) opts.headers.Authorization = `Bearer ${API_KEY}`;
+  if (body)    opts.body = JSON.stringify(body);
+  return fetch(path, opts);
+}
+
 class PlantForm {
   constructor(form) {
     this.form = form;
@@ -104,11 +112,7 @@ class PlantForm {
     console.log("Payload:", payload);
 
     try {
-      const res = await fetch("/api/plants", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
+      const res = await apiRequest("POST", "/api/plants", payload)
       console.log("Response status:", res.status);
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));

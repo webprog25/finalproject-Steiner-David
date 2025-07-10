@@ -1,3 +1,8 @@
+import GoogleAuth from "./googleauth.js";
+
+const CLIENT_ID = "995897016265-jjqb5mjsff0hbqpmgbr4siimo5ces6nh.apps.googleusercontent.com";
+let   API_KEY   = null;
+
 const modal     = document.getElementById("edit-modal");
 const form      = document.getElementById("edit-form");
 const cancelBtn = document.getElementById("edit-cancel");
@@ -100,24 +105,25 @@ class PlantCard {
 
   async handleWater(button) {
     button.classList.add("pressed");
-    await fetch(`/api/plants/${this.plant._id}`, {
-      method: "PATCH",
-      headers: {"Content-Type":"application/json"},
-      body: JSON.stringify({ lastWatered: new Date() })
-    });
-    const res = await fetch(`/api/plants/${this.plant._id}`);
-    this.plant = await res.json();
+    const r1 = await apiRequest("PATCH", `/api/plants/${this.plant._id}`, { lastWatered: new Date() });
+    if (!r1.ok) {
+      alert("You must be logged in to water plants.");
+      button.classList.remove("pressed");
+      return;
+    }
+    const r2   = await apiRequest("GET", `/api/plants/${this.plant._id}`);
+    this.plant = await r2.json();
     this.refresh();
     setTimeout(() => button.classList.remove("pressed"), 300);
   }
 
   handleEdit() {
     openEditModal(this.plant, async (updates) => {
-      await fetch(`/api/plants/${this.plant._id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updates)
-      });
+      const res = await apiRequest("PATCH", `/api/plants/${this.plant._id}`, updates);
+      if (!res.ok) {
+        alert("You must be logged in to edit plants.");
+        return;
+      }
       Object.assign(this.plant, updates);
       this.refresh();
     });
@@ -125,7 +131,11 @@ class PlantCard {
 
   async handleDelete() {
     if (!confirm(`Do you really want to delete "${this.plant.nickname}"?`)) return;
-    await fetch(`/api/plants/${this.plant._id}`, { method: "DELETE" });
+    const res = await apiRequest("DELETE", `/api/plants/${this.plant._id}`);
+    if (!res.ok) {
+        alert("You must be logged in to delete plants.");
+        return;
+    }
     this.element.remove();
   }
 
@@ -137,10 +147,21 @@ class PlantCard {
   }
 }
 
+/* Utility that automatically adds the JWT once we have it */
+async function apiRequest(method, path, body) {
+  const opts = {
+    method,
+    headers: { "Content-Type": "application/json" },
+  };
+  if (API_KEY) opts.headers.Authorization = `Bearer ${API_KEY}`;
+  if (body)    opts.body = JSON.stringify(body);
+  return fetch(path, opts);
+}
+
 async function loadPlants() {
   const grid = document.getElementById("grid");
   grid.innerHTML = "";
-  const res = await fetch("/api/plants");
+  const res = await apiRequest("GET", "/api/plants");
   const plants = await res.json();
   plants.forEach(p => {
     const card = new PlantCard(p);
@@ -148,4 +169,24 @@ async function loadPlants() {
   });
 }
 
-document.addEventListener("DOMContentLoaded", loadPlants);
+document.addEventListener("DOMContentLoaded", () => {
+  const host = document.getElementById("google-signin");   
+  const auth = new GoogleAuth(CLIENT_ID);
+
+  auth.render(host, async (idToken) => {
+    const res  = await apiRequest("POST", "/api/google", { idToken });
+    const data = await res.json();
+    if (!res.ok) {
+      alert(data.error || "Login failed");
+      return;
+    }
+
+    API_KEY = data.apiKey;       
+    window.API_KEY = API_KEY;      
+    host.textContent = `Hi, ${data.email}`;
+
+    loadPlants();
+  });
+
+  loadPlants();
+});
