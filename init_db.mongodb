@@ -1,15 +1,13 @@
-/**
- * This script seeds just the `plants` collection in the `plantsdb` database,
- * rather than dropping the entire database as in the lecture example.
- * I hope that this minor change will not give me negative points for "AI" usage.
- */
-
 use plantsdb;
-db.plants.drop();
+db.dropDatabase()
+
+
+const owner = "geldgans@gmail.com";  // the address you’ll log in with
 
 // Insert sample plants with lastWatered a few days ago
 db.plants.insertMany([
   {
+    owner,
     nickname: "Sunny",
     species: "Sunflower",
     frequencyDays: 4,
@@ -18,6 +16,7 @@ db.plants.insertMany([
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/7/7b/Sunflowers_sunflower.jpg"
   },
   {
+    owner,
     nickname: "Basil",
     species: "Basilicum",
     frequencyDays: 1,
@@ -26,6 +25,7 @@ db.plants.insertMany([
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/6/6c/Das_rote_Basilikum%2C_lat.Ocimum_basilicum%2C_bl%C3%BChendes_Basilikum.jpg"
   },
   {
+    owner,
     nickname: "Spike",
     species: "Desert Cactus",
     frequencyDays: 14,
@@ -34,6 +34,7 @@ db.plants.insertMany([
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/2/21/Saguaro_Cactus_With_Desert_Butte_In_Background_At_Springtime_In_AZ.jpg"
   },
   {
+    owner,
     nickname: "Orchy",
     species: "Phalaenopsis Orchid",
     frequencyDays: 7,

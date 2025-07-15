@@ -1,7 +1,8 @@
 import GoogleAuth from "./googleauth.js";
 
 const CLIENT_ID = "995897016265-jjqb5mjsff0hbqpmgbr4siimo5ces6nh.apps.googleusercontent.com";
-let   API_KEY   = null;
+let   API_KEY   = localStorage.getItem("apiKey") || null;
+let   USER_EMAIL = localStorage.getItem("email")  || null;
 
 const modal     = document.getElementById("edit-modal");
 const form      = document.getElementById("edit-form");
@@ -162,6 +163,10 @@ async function loadPlants() {
   const grid = document.getElementById("grid");
   grid.innerHTML = "";
   const res = await apiRequest("GET", "/api/plants");
+  if (!res.ok) {                           
+    grid.innerHTML = "<p class='info'>Sign in to see your plants.</p>";
+    return;
+  }
   const plants = await res.json();
   plants.forEach(p => {
     const card = new PlantCard(p);
@@ -171,20 +176,25 @@ async function loadPlants() {
 
 document.addEventListener("DOMContentLoaded", () => {
   const host = document.getElementById("google-signin");   
-  const auth = new GoogleAuth(CLIENT_ID);
+  if (API_KEY && USER_EMAIL) {
+    host.textContent = `Hi, ${USER_EMAIL}`;
+    loadPlants();
+    return;                       
+  }
 
+  const auth = new GoogleAuth(CLIENT_ID);
   auth.render(host, async (idToken) => {
     const res  = await apiRequest("POST", "/api/google", { idToken });
     const data = await res.json();
-    if (!res.ok) {
-      alert(data.error || "Login failed");
-      return;
-    }
+    if (!res.ok) { alert(data.error || "Login failed"); return; }
 
-    API_KEY = data.apiKey;       
-    window.API_KEY = API_KEY;      
-    host.textContent = `Hi, ${data.email}`;
+    API_KEY    = data.apiKey;
+    USER_EMAIL = data.email;
+    window.API_KEY = API_KEY;
+    localStorage.setItem("apiKey",  API_KEY);
+    localStorage.setItem("email",   USER_EMAIL);   
 
+    host.textContent = `Hi, ${USER_EMAIL}`;
     loadPlants();
   });
 

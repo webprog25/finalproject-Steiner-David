@@ -25,6 +25,7 @@ const initApi = async (app) => {
   let db = conn.db(DATABASE_NAME);
   Plants = db.collection(PLANTS_COLL);
   Users  = db.collection(USERS_COLL);
+  await Plants.createIndex({ owner: 1 });
 };
 
 const checkAuth = (req, res, next) => {
@@ -43,42 +44,41 @@ const checkAuth = (req, res, next) => {
 api.use(bodyParser.json({ limit: "20mb" }));
 api.use(cors());
 
-api.get("/plants", async (req, res) => {
-  const all = await Plants.find().toArray();
-  res.json(all);
+api.get("/plants", checkAuth, async (req, res) => {
+  const email  = res.locals.user.email;
+  const plants = await Plants.find({ owner: email }).toArray();
+  res.json(plants);
 });
 
 api.post("/plants", checkAuth, async (req, res) => {
-  const result = await Plants.insertOne(req.body);
-  res.status(201).json({ id: result.insertedId, ...req.body });
+  const email = res.locals.user.email;
+  const doc   = { ...req.body, owner: email, lastWatered: new Date() };
+  const { insertedId } = await Plants.insertOne(doc);
+  res.status(201).json({ ...doc, _id: insertedId });
 });
 
 api.get("/plants/:id", checkAuth, async (req, res) => {
-  const { id } = req.params;
-  const plant = await Plants.findOne({ _id: new ObjectId(id) });
-  if (!plant) {
-    return res
-      .status(404)
-      .json({ error: `No plant found with id ${id}` });
-  }
+  const email = res.locals.user.email;
+  const _id   = new ObjectId(req.params.id);
+  const plant = await Plants.findOne({ _id, owner: email });
+  if (!plant) return res.status(404).json({ error: "Not found" });
   res.json(plant);
 });
 
-
 api.patch("/plants/:id", checkAuth, async (req, res) => {
-  const { id } = req.params;
-  await Plants.updateOne(
-    { _id: new ObjectId(id) },
-    { $set: req.body }
-  );
-  const updated = await Plants.findOne({ _id: new ObjectId(id) });
-  res.json(updated);
+  const email = res.locals.user.email;
+  const _id   = new ObjectId(req.params.id);
+  const r = await Plants.updateOne({ _id, owner: email }, { $set: req.body });
+  if (!r.matchedCount) return res.status(404).json({ error: "Not found" });
+  res.json({ success: true });
 });
 
 api.delete("/plants/:id", checkAuth, async (req, res) => {
-  const { id } = req.params;
-  await Plants.deleteOne({ _id: new ObjectId(id) });
-  res.json({ id });
+  const email = res.locals.user.email;
+  const _id   = new ObjectId(req.params.id);
+  const r = await Plants.deleteOne({ _id, owner: email });
+  if (!r.deletedCount) return res.status(404).json({ error: "Not found" });
+  res.json({ success: true });
 });
 
 api.post("/google", async (req, res) => {
