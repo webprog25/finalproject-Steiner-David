@@ -190,12 +190,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const logoutBtn = document.getElementById("logout-btn");
   const addLink = document.querySelector("a.nav-link.add");
   const legend = document.querySelector("section.legend");
-  if (legend) legend.hidden = true;
-  if (addLink) addLink.hidden = true;
 
   // already logged in? show greeting & logout
   if (API_KEY && USER_EMAIL) {
-    host.textContent = `Hi, ${USER_EMAIL}`;
+    host.innerHTML = `<span class="user-greeting">Hi, ${USER_EMAIL}</span>`;
     logoutBtn.hidden = false;
     if (addLink) addLink.hidden = false;
     if (legend) legend.hidden = false;
@@ -215,7 +213,7 @@ document.addEventListener("DOMContentLoaded", () => {
       localStorage.setItem("apiKey", API_KEY);
       localStorage.setItem("email", USER_EMAIL);
 
-      host.textContent = `Hi, ${USER_EMAIL}`;
+      host.innerHTML = `<span class="user-greeting">Hi, ${USER_EMAIL}</span>`;
       logoutBtn.hidden = false;
       if (addLink) addLink.hidden = false;
       if (legend) legend.hidden = false;
@@ -227,7 +225,7 @@ document.addEventListener("DOMContentLoaded", () => {
       shape: "pill",
       text: "continue_with",
       logo_alignment: "left",
-      width: 180
+      width: 200
     });
   }
 
@@ -257,7 +255,7 @@ document.addEventListener("DOMContentLoaded", () => {
       localStorage.setItem("apiKey", API_KEY);
       localStorage.setItem("email", USER_EMAIL);
 
-      host.textContent = `Hi, ${USER_EMAIL}`;
+      host.innerHTML = `<span class="user-greeting">Hi, ${USER_EMAIL}</span>`;
       logoutBtn.hidden = false;
       if (addLink) addLink.hidden = false;
       if (legend) legend.hidden = false;
@@ -269,7 +267,7 @@ document.addEventListener("DOMContentLoaded", () => {
       shape: "pill",
       text: "continue_with",
       logo_alignment: "left",
-      width: 180
+      width: 200
     });
   });
 });

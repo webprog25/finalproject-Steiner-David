@@ -34,10 +34,11 @@ main {
 }
 
 .site-nav {
-  position: sticky;
+  position: relative;
   top: 0;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
+  flex-wrap: wrap;
   align-items: center;
   padding: 1rem 2rem;
   background-color: var(--color-white);
@@ -55,6 +56,7 @@ main {
 
 .site-nav .nav-links {
   display: flex;
+  margin-left: 0;
   gap: 1rem;
 }
 
@@ -63,6 +65,8 @@ main {
   font-size: 1rem;
   color: #555;
   text-decoration: none;
+  display: flex;
+  gap: 1rem;
   padding: 0.5rem 0.75rem;
   border-radius: 0.25rem;
   transition: color 0.2s, background-color 0.2s;
@@ -101,59 +105,55 @@ main {
 
 .site-nav #google-signin {
   position: absolute;
+  top: 0;
+  bottom: 0;
   left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.site-nav>#logout-btn {
-  margin-left: auto;
-  margin-right: 0.5rem;
-
-  background-color: var(--color-red);
+.site-nav #google-signin .user-greeting {
+  display: inline-block;
+  background-color: var(--color-green-light);
   color: var(--color-white);
-  border: none;
-  padding: 0.5rem 0.75rem;
-  font-size: 1rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.35rem 0.75rem;
   border-radius: 0.25rem;
-  cursor: pointer;
+  margin: 0 1rem;
+  white-space: nowrap;
   transition: background-color 0.2s;
 }
 
-.site-nav>#logout-btn:hover {
-  background-color: #b71c1c;
+.site-nav #google-signin .user-greeting:hover {
+  background-color: var(--color-green);
 }
 
-.intro {
-  text-align: center;
-  max-width: 600px;
-  margin: 3rem auto;
-  padding: 1.5rem;
-  background-color: var(--color-white);
-  border-radius: 0.5rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.intro:hover {
-  transform: translateY(-5px) scale(1.03);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
-
-.intro h2 {
-  font-size: 1.75rem;
-  color: var(--color-green);
-  margin-bottom: 0.5rem;
-}
-
-.intro-text {
-  font-size: 1rem;
-  color: var(--color-gray-dark);
-  line-height: 1.6;
-}
-
-.site-nav #google-signin {
+.site-nav > #logout-btn {
   margin-left: auto;
-  margin-right: auto;
+  margin-right: 1rem;
+  position: relative;
+  font-size:       1rem;
+  line-height:     1.5;
+  text-decoration: none;
+  padding:         0.5rem 0.75rem;
+  border-radius:   0.25rem;
+  transition:      color 0.2s, background-color 0.2s;
+  cursor:          pointer;
+
+  /* your red theme */
+  background-color: var(--color-red);
+  color:            var(--color-white);
+  border:           none;
+}
+
+.site-nav > #logout-btn:hover,
+.site-nav > #logout-btn:focus {
+  background-color: #b71c1c;  
+  color:            var(--color-white);
 }
 
 .legend {
@@ -178,6 +178,36 @@ main {
   gap: 1.5rem;
   justify-content: center;
   grid-template-columns: repeat(auto-fit, minmax(280px, 280px));
+}
+
+.plant-grid .intro {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 600px;
+  margin: 0 auto 2rem;
+  padding: 1rem;
+  background: var(--color-white);
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.plant-grid .intro h2,
+.plant-grid .intro p {
+  text-align: center;
+}
+
+.intro h2 {
+  font-size: 1.75rem;
+  color: var(--color-green);
+  margin-bottom: 0.5rem;
+}
+
+.intro-text {
+  font-size: 1rem;
+  color: var(--color-gray-dark);
+  line-height: 1.6;
 }
 
 .plant-card {
@@ -598,5 +628,48 @@ input[type="file"]:focus {
 @media (max-width: 615px) {
   .plant-grid {
     grid-template-columns: 280px;
+  }
+}
+
+/* Mobile: stack everything full-width, centered, in this order */
+@media (max-width: 650px) {
+  .site-nav {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .site-nav .nav-logo {
+    order: 1;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .site-nav #google-signin {
+    order: 2;
+    position: static !important;
+    transform: none !important;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .site-nav > #logout-btn {
+    order: 3;
+    display: block;
+    margin: 0.5rem auto;
+    width: auto;
+    text-align: center;
+  }
+
+  .site-nav .nav-links {
+    order: 4;
+    display: block !important;    
+    width: 100%;
+    text-align: center;
+    margin: 0.5rem 0;
+  }
+  .site-nav .nav-links .nav-link.add {
+    display: inline-block;        
   }
 }
