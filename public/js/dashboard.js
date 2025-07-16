@@ -7,6 +7,7 @@ let   USER_EMAIL = localStorage.getItem("email")  || null;
 const modal     = document.getElementById("edit-modal");
 const form      = document.getElementById("edit-form");
 const cancelBtn = document.getElementById("edit-cancel");
+const logoutBtn = document.getElementById("logout-btn");
 
 // Open and pre-fill the modal, then call onSave(updates) when submitted
 function openEditModal(plant, onSave) {
@@ -159,14 +160,16 @@ async function apiRequest(method, path, body) {
   return fetch(path, opts);
 }
 
+
 async function loadPlants() {
   const grid = document.getElementById("grid");
   grid.innerHTML = "";
-  const res = await apiRequest("GET", "/api/plants");
-  if (!res.ok) {                           
+  // if not logged in, show message and skip server call
+  if (!API_KEY) {
     grid.innerHTML = "<p class='info'>Sign in to see your plants.</p>";
     return;
   }
+  const res = await apiRequest("GET", "/api/plants");
   const plants = await res.json();
   plants.forEach(p => {
     const card = new PlantCard(p);
@@ -175,28 +178,63 @@ async function loadPlants() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const host = document.getElementById("google-signin");   
+  const host      = document.getElementById("google-signin");
+  const logoutBtn = document.getElementById("logout-btn");
+
+  // already logged in? show greeting & logout
   if (API_KEY && USER_EMAIL) {
-    host.textContent = `Hi, ${USER_EMAIL}`;
+    host.textContent    = `Hi, ${USER_EMAIL}`;
+    logoutBtn.hidden    = false;
     loadPlants();
-    return;                       
+  } else {
+    // first-time visitors: show plants prompt and render button
+    loadPlants();
+    const auth = new GoogleAuth(CLIENT_ID);
+    auth.render(host, async (idToken) => {
+      const res  = await apiRequest("POST", "/api/google", { idToken });
+      const data = await res.json();
+      if (!res.ok) { alert(data.error || "Login failed"); return; }
+
+      API_KEY    = data.apiKey;
+      USER_EMAIL = data.email;
+      window.API_KEY = API_KEY;
+      localStorage.setItem("apiKey", API_KEY);
+      localStorage.setItem("email", USER_EMAIL);
+
+      host.textContent = `Hi, ${USER_EMAIL}`;
+      logoutBtn.hidden = false;
+      loadPlants();
+    });
   }
 
-  const auth = new GoogleAuth(CLIENT_ID);
-  auth.render(host, async (idToken) => {
-    const res  = await apiRequest("POST", "/api/google", { idToken });
-    const data = await res.json();
-    if (!res.ok) { alert(data.error || "Login failed"); return; }
+  // wire up logout button
+  logoutBtn.addEventListener("click", () => {
+    API_KEY     = null;
+    USER_EMAIL  = null;
+    window.API_KEY = null;
+    localStorage.removeItem("apiKey");
+    localStorage.removeItem("email");
 
-    API_KEY    = data.apiKey;
-    USER_EMAIL = data.email;
-    window.API_KEY = API_KEY;
-    localStorage.setItem("apiKey",  API_KEY);
-    localStorage.setItem("email",   USER_EMAIL);   
-
-    host.textContent = `Hi, ${USER_EMAIL}`;
+    logoutBtn.hidden = true;
+    host.textContent = "";
     loadPlants();
-  });
 
-  loadPlants();
+    // re-render Google button for login
+    const auth = new GoogleAuth(CLIENT_ID);
+    auth.render(host, async (idToken) => {
+      const res  = await apiRequest("POST", "/api/google", { idToken });
+      const data = await res.json();
+      if (!res.ok) { alert(data.error || "Login failed"); return; }
+
+      API_KEY    = data.apiKey;
+      USER_EMAIL = data.email;
+      window.API_KEY = API_KEY;
+      localStorage.setItem("apiKey", API_KEY);
+      localStorage.setItem("email", USER_EMAIL);
+
+      host.textContent = `Hi, ${USER_EMAIL}`;
+      logoutBtn.hidden = false;
+      loadPlants();
+    });
+  });
 });
