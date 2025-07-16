@@ -106,7 +106,7 @@ main {
   transform: translate(-50%, -50%);
 }
 
-.site-nav > #logout-btn {
+.site-nav>#logout-btn {
   margin-left: auto;
   margin-right: 0.5rem;
 
@@ -120,7 +120,7 @@ main {
   transition: background-color 0.2s;
 }
 
-.site-nav > #logout-btn:hover {
+.site-nav>#logout-btn:hover {
   background-color: #b71c1c;
 }
 
@@ -176,7 +176,7 @@ main {
 .plant-grid {
   display: grid;
   gap: 1.5rem;
-  justify-content: center;         
+  justify-content: center;
   grid-template-columns: repeat(auto-fit, minmax(280px, 280px));
 }
 
@@ -200,7 +200,7 @@ main {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-.plant-card > img {
+.plant-card>img {
   width: 100%;
   height: 160px;
   object-fit: cover;
@@ -239,11 +239,17 @@ main {
   cursor: default;
 }
 
-.badge.green { background-color: var(--color-green); }
+.badge.green {
+  background-color: var(--color-green);
+}
 
-.badge.yellow { background-color: var(--color-yellow); }
+.badge.yellow {
+  background-color: var(--color-yellow);
+}
 
-.badge.red { background-color: var(--color-red); }
+.badge.red {
+  background-color: var(--color-red);
+}
 
 .card-actions-top {
   position: absolute;
@@ -272,9 +278,9 @@ main {
 .card-actions-bottom {
   display: flex;
   align-items: center;
-  justify-content: center;  
-  margin-top: auto;         
-  padding: 0.5rem 0;         
+  justify-content: center;
+  margin-top: auto;
+  padding: 0.5rem 0;
   background: rgba(255, 255, 255, 0.9);
 }
 
@@ -411,8 +417,8 @@ input[type="file"]:focus {
 
 .file-uploader {
   position: relative;
-  min-height: 200px;           
-  padding: 1rem;                
+  min-height: 200px;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -443,7 +449,7 @@ input[type="file"]:focus {
   display: block;
   margin: 0.5rem auto 0;
   max-width: 150px;
-  max-height: 150px;        
+  max-height: 150px;
   object-fit: contain;
   border-radius: 0.25rem;
 }
@@ -452,7 +458,7 @@ input[type="file"]:focus {
   position: absolute;
   top: 0.25rem;
   right: 0.25rem;
-  background: rgba(255,255,255,0.8);
+  background: rgba(255, 255, 255, 0.8);
   border: none;
   border-radius: 50%;
   width: 2rem;
@@ -469,13 +475,16 @@ input[type="file"]:focus {
 .file-uploader .btn-clear:focus {
   background-color: var(--color-red);
   color: var(--color-white);
-  opacity: 1;                 
+  opacity: 1;
   outline: none;
 }
 
 .modal {
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -488,8 +497,11 @@ input[type="file"]:focus {
 
 .modal-backdrop {
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.5);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
 }
 
 .modal-content {
@@ -497,7 +509,7 @@ input[type="file"]:focus {
   background: var(--color-white);
   padding: 1.5rem;
   border-radius: 0.5rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   width: 320px;
   max-width: 90%;
   z-index: 1;
@@ -517,7 +529,7 @@ input[type="file"]:focus {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   grid-gap: 1rem;
-  margin: 0;               
+  margin: 0;
 }
 
 .edit-form .form-row {

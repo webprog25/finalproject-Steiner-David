@@ -1,8 +1,8 @@
 // File uploader 
 function setupFileUploader() {
   const uploader = document.getElementById("file-uploader");
-  const input    = uploader.querySelector("input[type=file]");
-  const preview  = document.getElementById("file-preview");
+  const input = uploader.querySelector("input[type=file]");
+  const preview = document.getElementById("file-preview");
   const clearBtn = uploader.querySelector(".btn-clear");
   const placeholder = uploader.querySelector("p");
 
@@ -55,20 +55,20 @@ function setupFileUploader() {
 
   // Clear selection
   clearBtn.addEventListener("click", (e) => {
-    e.stopPropagation();         
-    input.value = "";            
+    e.stopPropagation();
+    input.value = "";
     preview.src = "";
-    preview.hidden = true;       
-    clearBtn.hidden = true;      
+    preview.hidden = true;
+    clearBtn.hidden = true;
     placeholder.hidden = false;
   });
 }
 
 const API_KEY = window.API_KEY || localStorage.getItem("apiKey") || null;
 function apiRequest(method, path, body) {
-  const opts = { method, headers: { "Content-Type":"application/json" } };
+  const opts = { method, headers: { "Content-Type": "application/json" } };
   if (API_KEY) opts.headers.Authorization = `Bearer ${API_KEY}`;
-  if (body)    opts.body = JSON.stringify(body);
+  if (body) opts.body = JSON.stringify(body);
   return fetch(path, opts);
 }
 
@@ -84,9 +84,9 @@ class PlantForm {
     const data = new FormData(this.form);
 
     const file = data.get("image");
-    const url  = data.get("imageUrl").trim();
+    const url = data.get("imageUrl").trim();
     const hasFile = file && file.size > 0;
-    const hasUrl  = url !== "";
+    const hasUrl = url !== "";
 
     if (hasFile && hasUrl) {
       alert("Please provide either an image file or a URL, not both.");

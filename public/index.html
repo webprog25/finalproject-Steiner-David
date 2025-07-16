@@ -1,69 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Plant Pal</title>
-    <link rel="icon" type="image/svg+xml" href="icons/favicon.svg"/>
 
-    <!-- Automatic page and style reloading when files change -->
-    <script type="module" src="/lib/client/updater.js"></script>
-    <script src="https://accounts.google.com/gsi/client" defer></script>
-    <link rel="stylesheet" href="styles.css" />
-    <script type="module" src="js/dashboard.js"></script>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plant Pal</title>
+  <link rel="icon" type="image/svg+xml" href="icons/favicon.svg" />
 
-  </head>
+  <!-- Automatic page and style reloading when files change -->
+  <script type="module" src="/lib/client/updater.js"></script>
+  <script src="https://accounts.google.com/gsi/client" defer></script>
+  <link rel="stylesheet" href="styles.css" />
+  <script type="module" src="js/dashboard.js"></script>
 
-  <body>
-    <header>
-      <nav class="site-nav">
-        <a href="index.html" class="nav-logo">Plant Pal</a>
-        <div id="google-signin"></div>
-        <button id="logout-btn" hidden>Log out</button>
-        <div class="nav-links">
-          <a href="add.html" class="nav-link add">Add Plant</a>
-        </div>
-      </nav>
-    </header>
-    <main>
-      <section class="legend">
-        <p class="legend-note">Badge shows <strong>days since last watered</strong>, color-coded by how close you are to your next watering:</p>
-        <span class="badge green" title="More than 75% of interval remaining">Green: OK</span>
-        <span class="badge yellow" title="Within last 25% of your watering interval">Yellow: Due Soon</span>
-        <span class="badge red" title="Past your watering interval">Red: Overdue</span>
-      </section>
-      <section id="grid" class="plant-grid"></section>
-    </main>
-    <div id="edit-modal" class="modal" hidden>
-      <div class="modal-backdrop"></div>
-      <div class="modal-content">
-        <h2>Edit Plant</h2>
-        <form id="edit-form" class="edit-form">
-          <div class="form-row">
-            <label for="edit-nickname">Nickname</label>
-            <input id="edit-nickname" name="nickname" type="text" required />
-          </div>
-          <div class="form-row">
-            <label for="edit-species">Species</label>
-            <input id="edit-species" name="species" type="text" required />
-          </div>
-          <div class="form-row">
-            <label for="edit-frequency">Frequency (days)</label>
-            <input
-              id="edit-frequency"
-              name="frequencyDays"
-              type="number"
-              min="1"
-              step="1"
-              required
-            />
-          </div>
-          <div class="modal-actions">
-            <button type="submit">Save</button>
-            <button type="button" id="edit-cancel">Cancel</button>
-          </div>
-        </form>
+</head>
+
+<body>
+  <header>
+    <nav class="site-nav">
+      <a href="index.html" class="nav-logo">Plant Pal</a>
+      <div id="google-signin"></div>
+      <button id="logout-btn" hidden>Log out</button>
+      <div class="nav-links">
+        <a href="add.html" class="nav-link add">Add Plant</a>
       </div>
+    </nav>
+  </header>
+  <main>
+    <section class="legend">
+      <p class="legend-note">Badge shows <strong>days since last watered</strong>, color-coded by how close you are to
+        your next watering:</p>
+      <span class="badge green" title="More than 75% of interval remaining">Green: OK</span>
+      <span class="badge yellow" title="Within last 25% of your watering interval">Yellow: Due Soon</span>
+      <span class="badge red" title="Past your watering interval">Red: Overdue</span>
+    </section>
+    <section id="grid" class="plant-grid"></section>
+  </main>
+  <div id="edit-modal" class="modal" hidden>
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+      <h2>Edit Plant</h2>
+      <form id="edit-form" class="edit-form">
+        <div class="form-row">
+          <label for="edit-nickname">Nickname</label>
+          <input id="edit-nickname" name="nickname" type="text" required />
+        </div>
+        <div class="form-row">
+          <label for="edit-species">Species</label>
+          <input id="edit-species" name="species" type="text" required />
+        </div>
+        <div class="form-row">
+          <label for="edit-frequency">Frequency (days)</label>
+          <input id="edit-frequency" name="frequencyDays" type="number" min="1" step="1" required />
+        </div>
+        <div class="modal-actions">
+          <button type="submit">Save</button>
+          <button type="button" id="edit-cancel">Cancel</button>
+        </div>
+      </form>
     </div>
-  </body>
+  </div>
+</body>
+
 </html>

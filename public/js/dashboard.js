@@ -1,25 +1,25 @@
 import GoogleAuth from "./googleauth.js";
 
 const CLIENT_ID = "995897016265-jjqb5mjsff0hbqpmgbr4siimo5ces6nh.apps.googleusercontent.com";
-let   API_KEY   = localStorage.getItem("apiKey") || null;
-let   USER_EMAIL = localStorage.getItem("email")  || null;
+let API_KEY = localStorage.getItem("apiKey") || null;
+let USER_EMAIL = localStorage.getItem("email") || null;
 
-const modal     = document.getElementById("edit-modal");
-const form      = document.getElementById("edit-form");
+const modal = document.getElementById("edit-modal");
+const form = document.getElementById("edit-form");
 const cancelBtn = document.getElementById("edit-cancel");
 
 
 // Open and pre-fill the modal, then call onSave(updates) when submitted
 function openEditModal(plant, onSave) {
   modal.hidden = false;
-  form.nickname.value      = plant.nickname;
-  form.species.value       = plant.species;
+  form.nickname.value = plant.nickname;
+  form.species.value = plant.species;
   form.frequencyDays.value = plant.frequencyDays;
   form.onsubmit = async (e) => {
     e.preventDefault();
     await onSave({
-      nickname:      form.nickname.value.trim(),
-      species:       form.species.value.trim(),
+      nickname: form.nickname.value.trim(),
+      species: form.species.value.trim(),
       frequencyDays: Number(form.frequencyDays.value)
     });
     closeEditModal();
@@ -33,7 +33,7 @@ function closeEditModal() {
 // Cancel or backdrop click closes without saving
 cancelBtn.addEventListener("click", closeEditModal);
 modal.querySelector(".modal-backdrop")
-     .addEventListener("click", closeEditModal);
+  .addEventListener("click", closeEditModal);
 
 class PlantCard {
   constructor(plant) {
@@ -57,7 +57,7 @@ class PlantCard {
     // Compute badge text & color
     const daysAgo = Math.round(
       (Date.now() - new Date(this.plant.lastWatered)) /
-        (1000 * 60 * 60 * 24)
+      (1000 * 60 * 60 * 24)
     );
     const color = this.getBadgeColor();
 
@@ -97,12 +97,12 @@ class PlantCard {
 
   attachHandlers() {
     const btnWater = this.element.querySelector(".btn-water");
-    const btnEdit  = this.element.querySelector(".btn-edit");
-    const btnDel   = this.element.querySelector(".btn-delete");
+    const btnEdit = this.element.querySelector(".btn-edit");
+    const btnDel = this.element.querySelector(".btn-delete");
 
     btnWater.addEventListener("click", () => this.handleWater(btnWater));
-    btnEdit.addEventListener("click",  () => this.handleEdit(btnEdit));
-    btnDel.addEventListener("click",   () => this.handleDelete());
+    btnEdit.addEventListener("click", () => this.handleEdit(btnEdit));
+    btnDel.addEventListener("click", () => this.handleDelete());
   }
 
   async handleWater(button) {
@@ -113,7 +113,7 @@ class PlantCard {
       button.classList.remove("pressed");
       return;
     }
-    const r2   = await apiRequest("GET", `/api/plants/${this.plant._id}`);
+    const r2 = await apiRequest("GET", `/api/plants/${this.plant._id}`);
     this.plant = await r2.json();
     this.refresh();
     setTimeout(() => button.classList.remove("pressed"), 300);
@@ -135,8 +135,8 @@ class PlantCard {
     if (!confirm(`Do you really want to delete "${this.plant.nickname}"?`)) return;
     const res = await apiRequest("DELETE", `/api/plants/${this.plant._id}`);
     if (!res.ok) {
-        alert("You must be logged in to delete plants.");
-        return;
+      alert("You must be logged in to delete plants.");
+      return;
     }
     this.element.remove();
   }
@@ -156,7 +156,7 @@ async function apiRequest(method, path, body) {
     headers: { "Content-Type": "application/json" },
   };
   if (API_KEY) opts.headers.Authorization = `Bearer ${API_KEY}`;
-  if (body)    opts.body = JSON.stringify(body);
+  if (body) opts.body = JSON.stringify(body);
   return fetch(path, opts);
 }
 
@@ -166,7 +166,7 @@ async function loadPlants() {
   grid.innerHTML = "";
   // if not logged in, show message and skip server call
   if (!API_KEY) {
-   grid.innerHTML = `
+    grid.innerHTML = `
      <section class="intro">
        <h2>Welcome to Plant Pal</h2>
        <p class="intro-text">
@@ -175,8 +175,8 @@ async function loadPlants() {
        </p>
      </section>
    `;
-   return;
- }
+    return;
+  }
   const res = await apiRequest("GET", "/api/plants");
   const plants = await res.json();
   plants.forEach(p => {
@@ -186,12 +186,12 @@ async function loadPlants() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const host      = document.getElementById("google-signin");
+  const host = document.getElementById("google-signin");
   const logoutBtn = document.getElementById("logout-btn");
-  const addLink   = document.querySelector("a.nav-link.add");
-  const legend    = document.querySelector("section.legend");
+  const addLink = document.querySelector("a.nav-link.add");
+  const legend = document.querySelector("section.legend");
   if (legend) legend.hidden = true;
-  if (addLink) addLink.hidden = true;    
+  if (addLink) addLink.hidden = true;
 
   // already logged in? show greeting & logout
   if (API_KEY && USER_EMAIL) {
@@ -205,11 +205,11 @@ document.addEventListener("DOMContentLoaded", () => {
     loadPlants();
     const auth = new GoogleAuth(CLIENT_ID);
     auth.render(host, async (idToken) => {
-      const res  = await apiRequest("POST", "/api/google", { idToken });
+      const res = await apiRequest("POST", "/api/google", { idToken });
       const data = await res.json();
       if (!res.ok) { alert(data.error || "Login failed"); return; }
 
-      API_KEY    = data.apiKey;
+      API_KEY = data.apiKey;
       USER_EMAIL = data.email;
       window.API_KEY = API_KEY;
       localStorage.setItem("apiKey", API_KEY);
@@ -220,13 +220,20 @@ document.addEventListener("DOMContentLoaded", () => {
       if (addLink) addLink.hidden = false;
       if (legend) legend.hidden = false;
       loadPlants();
+    }, {
+      type: "standard",
+      theme: "outline",
+      size: "large",
+      shape: "pill",
+      text: "continue_with",
+      logo_alignment: "left",
+      width: 180
     });
   }
 
-  // wire up logout button
   logoutBtn.addEventListener("click", () => {
-    API_KEY     = null;
-    USER_EMAIL  = null;
+    API_KEY = null;
+    USER_EMAIL = null;
     window.API_KEY = null;
     localStorage.removeItem("apiKey");
     localStorage.removeItem("email");
@@ -240,11 +247,11 @@ document.addEventListener("DOMContentLoaded", () => {
     // re-render Google button for login
     const auth = new GoogleAuth(CLIENT_ID);
     auth.render(host, async (idToken) => {
-      const res  = await apiRequest("POST", "/api/google", { idToken });
+      const res = await apiRequest("POST", "/api/google", { idToken });
       const data = await res.json();
       if (!res.ok) { alert(data.error || "Login failed"); return; }
 
-      API_KEY    = data.apiKey;
+      API_KEY = data.apiKey;
       USER_EMAIL = data.email;
       window.API_KEY = API_KEY;
       localStorage.setItem("apiKey", API_KEY);
@@ -255,6 +262,14 @@ document.addEventListener("DOMContentLoaded", () => {
       if (addLink) addLink.hidden = false;
       if (legend) legend.hidden = false;
       loadPlants();
+    }, {
+      type: "standard",
+      theme: "outline",
+      size: "large",
+      shape: "pill",
+      text: "continue_with",
+      logo_alignment: "left",
+      width: 180
     });
   });
 });

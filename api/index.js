@@ -6,13 +6,13 @@ import { OAuth2Client } from "google-auth-library";
 import jwt from "jsonwebtoken";
 
 const DATABASE_NAME = "plantsdb";
-const PLANTS_COLL   = "plants";
-const USERS_COLL   = "users";
+const PLANTS_COLL = "plants";
+const USERS_COLL = "users";
 
-const SECRET     = "Z3465pFZGe6kiEW3yTsQ4Hf/ALQDOtlfosgxP77FefE=";
-const CLIENT_ID  = "995897016265-jjqb5mjsff0hbqpmgbr4siimo5ces6nh.apps.googleusercontent.com";
+const SECRET = "Z3465pFZGe6kiEW3yTsQ4Hf/ALQDOtlfosgxP77FefE=";
+const CLIENT_ID = "995897016265-jjqb5mjsff0hbqpmgbr4siimo5ces6nh.apps.googleusercontent.com";
 
-let api    = express.Router();
+let api = express.Router();
 let Plants;
 let Users;
 
@@ -24,7 +24,7 @@ const initApi = async (app) => {
   );
   let db = conn.db(DATABASE_NAME);
   Plants = db.collection(PLANTS_COLL);
-  Users  = db.collection(USERS_COLL);
+  Users = db.collection(USERS_COLL);
   await Plants.createIndex({ owner: 1 });
 };
 
@@ -45,21 +45,21 @@ api.use(bodyParser.json({ limit: "20mb" }));
 api.use(cors());
 
 api.get("/plants", checkAuth, async (req, res) => {
-  const email  = res.locals.user.email;
+  const email = res.locals.user.email;
   const plants = await Plants.find({ owner: email }).toArray();
   res.json(plants);
 });
 
 api.post("/plants", checkAuth, async (req, res) => {
   const email = res.locals.user.email;
-  const doc   = { ...req.body, owner: email, lastWatered: new Date() };
+  const doc = { ...req.body, owner: email, lastWatered: new Date() };
   const { insertedId } = await Plants.insertOne(doc);
   res.status(201).json({ ...doc, _id: insertedId });
 });
 
 api.get("/plants/:id", checkAuth, async (req, res) => {
   const email = res.locals.user.email;
-  const _id   = new ObjectId(req.params.id);
+  const _id = new ObjectId(req.params.id);
   const plant = await Plants.findOne({ _id, owner: email });
   if (!plant) return res.status(404).json({ error: "Not found" });
   res.json(plant);
@@ -67,7 +67,7 @@ api.get("/plants/:id", checkAuth, async (req, res) => {
 
 api.patch("/plants/:id", checkAuth, async (req, res) => {
   const email = res.locals.user.email;
-  const _id   = new ObjectId(req.params.id);
+  const _id = new ObjectId(req.params.id);
   const r = await Plants.updateOne({ _id, owner: email }, { $set: req.body });
   if (!r.matchedCount) return res.status(404).json({ error: "Not found" });
   res.json({ success: true });
@@ -75,7 +75,7 @@ api.patch("/plants/:id", checkAuth, async (req, res) => {
 
 api.delete("/plants/:id", checkAuth, async (req, res) => {
   const email = res.locals.user.email;
-  const _id   = new ObjectId(req.params.id);
+  const _id = new ObjectId(req.params.id);
   const r = await Plants.deleteOne({ _id, owner: email });
   if (!r.deletedCount) return res.status(404).json({ error: "Not found" });
   res.json({ success: true });
