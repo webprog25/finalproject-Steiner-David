@@ -16,6 +16,10 @@
   box-sizing: border-box;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 body {
   font-family: var(--font-sans);
   background-color: var(--color-gray-light);
@@ -93,6 +97,63 @@ main {
 .site-nav .nav-link.add:hover {
   background-color: var(--color-green-light);
   color: var(--color-white);
+}
+
+.site-nav #google-signin {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.site-nav > #logout-btn {
+  margin-left: auto;
+  margin-right: 0.5rem;
+
+  background-color: var(--color-red);
+  color: var(--color-white);
+  border: none;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.site-nav > #logout-btn:hover {
+  background-color: #b71c1c;
+}
+
+.intro {
+  text-align: center;
+  max-width: 600px;
+  margin: 3rem auto;
+  padding: 1.5rem;
+  background-color: var(--color-white);
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.intro:hover {
+  transform: translateY(-5px) scale(1.03);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.intro h2 {
+  font-size: 1.75rem;
+  color: var(--color-green);
+  margin-bottom: 0.5rem;
+}
+
+.intro-text {
+  font-size: 1rem;
+  color: var(--color-gray-dark);
+  line-height: 1.6;
+}
+
+.site-nav #google-signin {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .legend {

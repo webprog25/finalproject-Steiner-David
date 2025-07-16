@@ -7,7 +7,7 @@ let   USER_EMAIL = localStorage.getItem("email")  || null;
 const modal     = document.getElementById("edit-modal");
 const form      = document.getElementById("edit-form");
 const cancelBtn = document.getElementById("edit-cancel");
-const logoutBtn = document.getElementById("logout-btn");
+
 
 // Open and pre-fill the modal, then call onSave(updates) when submitted
 function openEditModal(plant, onSave) {
@@ -166,9 +166,17 @@ async function loadPlants() {
   grid.innerHTML = "";
   // if not logged in, show message and skip server call
   if (!API_KEY) {
-    grid.innerHTML = "<p class='info'>Sign in to see your plants.</p>";
-    return;
-  }
+   grid.innerHTML = `
+     <section class="intro">
+       <h2>Welcome to Plant Pal</h2>
+       <p class="intro-text">
+         Plant Pal helps you keep your houseplants happy by tracking when they need water.
+         Sign in with Google to view and manage your personal plant collection.
+       </p>
+     </section>
+   `;
+   return;
+ }
   const res = await apiRequest("GET", "/api/plants");
   const plants = await res.json();
   plants.forEach(p => {
@@ -180,11 +188,17 @@ async function loadPlants() {
 document.addEventListener("DOMContentLoaded", () => {
   const host      = document.getElementById("google-signin");
   const logoutBtn = document.getElementById("logout-btn");
+  const addLink   = document.querySelector("a.nav-link.add");
+  const legend    = document.querySelector("section.legend");
+  if (legend) legend.hidden = true;
+  if (addLink) addLink.hidden = true;    
 
   // already logged in? show greeting & logout
   if (API_KEY && USER_EMAIL) {
-    host.textContent    = `Hi, ${USER_EMAIL}`;
-    logoutBtn.hidden    = false;
+    host.textContent = `Hi, ${USER_EMAIL}`;
+    logoutBtn.hidden = false;
+    if (addLink) addLink.hidden = false;
+    if (legend) legend.hidden = false;
     loadPlants();
   } else {
     // first-time visitors: show plants prompt and render button
@@ -203,6 +217,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       host.textContent = `Hi, ${USER_EMAIL}`;
       logoutBtn.hidden = false;
+      if (addLink) addLink.hidden = false;
+      if (legend) legend.hidden = false;
       loadPlants();
     });
   }
@@ -216,6 +232,8 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.removeItem("email");
 
     logoutBtn.hidden = true;
+    if (addLink) addLink.hidden = true;
+    if (legend) legend.hidden = true;
     host.textContent = "";
     loadPlants();
 
@@ -234,6 +252,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       host.textContent = `Hi, ${USER_EMAIL}`;
       logoutBtn.hidden = false;
+      if (addLink) addLink.hidden = false;
+      if (legend) legend.hidden = false;
       loadPlants();
     });
   });
