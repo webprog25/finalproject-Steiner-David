@@ -27,12 +27,14 @@ export function initAuthUi(onLogin) {
     const logoutBtn = document.getElementById("logout-btn");
     const addLink = document.querySelector("a.nav-link.add");
     const legend = document.querySelector("section.legend");
+    const stats = document.getElementById("stats");
 
     function showAuthed(email) {
         if (host) host.innerHTML = `<span class="user-greeting">Hi, ${email}</span>`;
         if (logoutBtn) logoutBtn.hidden = false;
         if (addLink) addLink.hidden = false;
         if (legend) legend.hidden = false;
+        if (stats) stats.hidden = false;
         if (onLogin) onLogin();
     }
 
@@ -57,6 +59,7 @@ export function initAuthUi(onLogin) {
         if (logoutBtn) logoutBtn.hidden = true;
         if (addLink) addLink.hidden = true;
         if (legend) legend.hidden = true;
+        if (stats) stats.hidden = true;
         if (onLogin) onLogin();
     }
 

@@ -1,4 +1,7 @@
 import { initAuthUi, apiRequest, API_KEY } from "./auth-ui.js";
+import "https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js";
+
+let statusChart = null;
 
 const modal = document.getElementById("edit-modal");
 const form = document.getElementById("edit-form");
@@ -103,15 +106,13 @@ class PlantCard {
 
   async handleWater(button) {
     button.classList.add("pressed");
-    const r1 = await apiRequest("PATCH", `/api/plants/${this.plant._id}`, { lastWatered: new Date() });
-    if (!r1.ok) {
+    const res = await apiRequest("PATCH", `/api/plants/${this.plant._id}`, { lastWatered: new Date() });
+    if (!res.ok) {
       alert("You must be logged in to water plants.");
       button.classList.remove("pressed");
       return;
     }
-    const r2 = await apiRequest("GET", `/api/plants/${this.plant._id}`);
-    this.plant = await r2.json();
-    this.refresh();
+    await reloadPlantsPreserveScroll();
     setTimeout(() => button.classList.remove("pressed"), 300);
   }
 
@@ -122,19 +123,20 @@ class PlantCard {
         alert("You must be logged in to edit plants.");
         return;
       }
-      Object.assign(this.plant, updates);
-      this.refresh();
+
+      await reloadPlantsPreserveScroll();
     });
   }
 
   async handleDelete() {
     if (!confirm(`Do you really want to delete "${this.plant.nickname}"?`)) return;
+
     const res = await apiRequest("DELETE", `/api/plants/${this.plant._id}`);
     if (!res.ok) {
       alert("You must be logged in to delete plants.");
       return;
     }
-    this.element.remove();
+    await reloadPlantsPreserveScroll();
   }
 
   refresh() {
@@ -143,6 +145,63 @@ class PlantCard {
     this.element = newEl;
     this.attachHandlers();
   }
+}
+
+function plantStatus(plant) {
+  const ms = Date.now() - new Date(plant.lastWatered).getTime();
+  const days = ms / (1000 * 60 * 60 * 24);
+  if (days < plant.frequencyDays * 0.75) return "green";
+  if (days < plant.frequencyDays) return "yellow";
+  return "red";
+}
+
+function renderStatusChart(plants) {
+  const el = document.getElementById("statusChart");
+  if (!el) return;
+
+  const counts = { green: 0, yellow: 0, red: 0 };
+  plants.forEach(p => counts[plantStatus(p)]++);
+
+  const total = counts.green + counts.yellow + counts.red;
+
+  if (total === 0) {
+    if (statusChart) { statusChart.destroy(); statusChart = null; }
+    // write message into the stats box
+    const box = document.getElementById("stats");
+    if (box) box.querySelector("h3").textContent = "No plants yet";
+    return;
+  }
+
+  // destroy prior chart (if any) before re-creating
+  if (statusChart) {
+    statusChart.destroy();
+    statusChart = null;
+  }
+
+  statusChart = new Chart(el, {
+    type: "doughnut",
+    data: {
+      labels: ["On Track", "Due Soon", "Overdue"],
+      datasets: [{
+        data: [counts.green, counts.yellow, counts.red],
+        backgroundColor: ["#2e7d32", "#fbc02d", "#d32f2f"], // match CSS vars
+        borderWidth: 1
+      }]
+    },
+    options: {
+      plugins: {
+        legend: { position: "bottom" },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => {
+              const v = ctx.parsed;
+              return `${ctx.label}: ${v} plant${v === 1 ? "" : "s"}`;
+            }
+          }
+        }
+      }
+    }
+  });
 }
 
 
@@ -168,6 +227,14 @@ async function loadPlants() {
     const card = new PlantCard(p);
     grid.appendChild(card.element);
   });
+  renderStatusChart(plants);
+}
+
+async function reloadPlantsPreserveScroll() {
+  const y = window.scrollY;
+  await loadPlants();                  // re-fetch + rebuild + update chart
+  // use rAF to ensure layout complete before restoring scroll
+  requestAnimationFrame(() => window.scrollTo(0, y));
 }
 
 document.addEventListener("DOMContentLoaded", () => {
