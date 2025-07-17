@@ -1,3 +1,21 @@
+import { initAuthUi, apiRequest, API_KEY } from "./auth-ui.js";
+
+
+function handleAuthChange() {
+  if (!API_KEY) {
+    // use replace so Back doesn't drop them right back here
+    window.location.replace("index.html?signin=1");
+    return;
+  }
+  // user is logged in;
+  const form = document.getElementById("plant-form");
+  if (form) {
+    form.querySelectorAll("input, button").forEach(el => (el.disabled = false));
+    const note = document.getElementById("signin-note");
+    if (note) note.remove();
+  }
+}
+
 // File uploader 
 function setupFileUploader() {
   const uploader = document.getElementById("file-uploader");
@@ -64,14 +82,6 @@ function setupFileUploader() {
   });
 }
 
-const API_KEY = window.API_KEY || localStorage.getItem("apiKey") || null;
-function apiRequest(method, path, body) {
-  const opts = { method, headers: { "Content-Type": "application/json" } };
-  if (API_KEY) opts.headers.Authorization = `Bearer ${API_KEY}`;
-  if (body) opts.body = JSON.stringify(body);
-  return fetch(path, opts);
-}
-
 class PlantForm {
   constructor(form) {
     this.form = form;
@@ -82,7 +92,6 @@ class PlantForm {
     event.preventDefault();
     console.log("Form submit handler fired");
     const data = new FormData(this.form);
-
     const file = data.get("image");
     const url = data.get("imageUrl").trim();
     const hasFile = file && file.size > 0;
@@ -137,7 +146,9 @@ class PlantForm {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  initAuthUi(handleAuthChange);
   setupFileUploader();
   const form = document.getElementById("plant-form");
   if (form) new PlantForm(form);
+  handleAuthChange;
 });

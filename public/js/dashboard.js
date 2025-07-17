@@ -1,8 +1,4 @@
-import GoogleAuth from "./googleauth.js";
-
-const CLIENT_ID = "995897016265-jjqb5mjsff0hbqpmgbr4siimo5ces6nh.apps.googleusercontent.com";
-let API_KEY = localStorage.getItem("apiKey") || null;
-let USER_EMAIL = localStorage.getItem("email") || null;
+import { initAuthUi, apiRequest, API_KEY } from "./auth-ui.js";
 
 const modal = document.getElementById("edit-modal");
 const form = document.getElementById("edit-form");
@@ -149,17 +145,6 @@ class PlantCard {
   }
 }
 
-/* Utility that automatically adds the JWT once we have it */
-async function apiRequest(method, path, body) {
-  const opts = {
-    method,
-    headers: { "Content-Type": "application/json" },
-  };
-  if (API_KEY) opts.headers.Authorization = `Bearer ${API_KEY}`;
-  if (body) opts.body = JSON.stringify(body);
-  return fetch(path, opts);
-}
-
 
 async function loadPlants() {
   const grid = document.getElementById("grid");
@@ -186,88 +171,6 @@ async function loadPlants() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const host = document.getElementById("google-signin");
-  const logoutBtn = document.getElementById("logout-btn");
-  const addLink = document.querySelector("a.nav-link.add");
-  const legend = document.querySelector("section.legend");
-
-  // already logged in? show greeting & logout
-  if (API_KEY && USER_EMAIL) {
-    host.innerHTML = `<span class="user-greeting">Hi, ${USER_EMAIL}</span>`;
-    logoutBtn.hidden = false;
-    if (addLink) addLink.hidden = false;
-    if (legend) legend.hidden = false;
-    loadPlants();
-  } else {
-    // first-time visitors: show plants prompt and render button
-    loadPlants();
-    const auth = new GoogleAuth(CLIENT_ID);
-    auth.render(host, async (idToken) => {
-      const res = await apiRequest("POST", "/api/google", { idToken });
-      const data = await res.json();
-      if (!res.ok) { alert(data.error || "Login failed"); return; }
-
-      API_KEY = data.apiKey;
-      USER_EMAIL = data.email;
-      window.API_KEY = API_KEY;
-      localStorage.setItem("apiKey", API_KEY);
-      localStorage.setItem("email", USER_EMAIL);
-
-      host.innerHTML = `<span class="user-greeting">Hi, ${USER_EMAIL}</span>`;
-      logoutBtn.hidden = false;
-      if (addLink) addLink.hidden = false;
-      if (legend) legend.hidden = false;
-      loadPlants();
-    }, {
-      type: "standard",
-      theme: "outline",
-      size: "large",
-      shape: "pill",
-      text: "continue_with",
-      logo_alignment: "left",
-      width: 200
-    });
-  }
-
-  logoutBtn.addEventListener("click", () => {
-    API_KEY = null;
-    USER_EMAIL = null;
-    window.API_KEY = null;
-    localStorage.removeItem("apiKey");
-    localStorage.removeItem("email");
-
-    logoutBtn.hidden = true;
-    if (addLink) addLink.hidden = true;
-    if (legend) legend.hidden = true;
-    host.textContent = "";
-    loadPlants();
-
-    // re-render Google button for login
-    const auth = new GoogleAuth(CLIENT_ID);
-    auth.render(host, async (idToken) => {
-      const res = await apiRequest("POST", "/api/google", { idToken });
-      const data = await res.json();
-      if (!res.ok) { alert(data.error || "Login failed"); return; }
-
-      API_KEY = data.apiKey;
-      USER_EMAIL = data.email;
-      window.API_KEY = API_KEY;
-      localStorage.setItem("apiKey", API_KEY);
-      localStorage.setItem("email", USER_EMAIL);
-
-      host.innerHTML = `<span class="user-greeting">Hi, ${USER_EMAIL}</span>`;
-      logoutBtn.hidden = false;
-      if (addLink) addLink.hidden = false;
-      if (legend) legend.hidden = false;
-      loadPlants();
-    }, {
-      type: "standard",
-      theme: "outline",
-      size: "large",
-      shape: "pill",
-      text: "continue_with",
-      logo_alignment: "left",
-      width: 200
-    });
-  });
+  // set up nav + auth, then call loadPlants() when logged in
+  initAuthUi(loadPlants);
 });
