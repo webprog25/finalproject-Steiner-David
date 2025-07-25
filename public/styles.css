@@ -143,8 +143,6 @@ main {
   border-radius: 0.25rem;
   transition: color 0.2s, background-color 0.2s;
   cursor: pointer;
-
-  /* your red theme */
   background-color: var(--color-red);
   color: var(--color-white);
   border: none;
@@ -636,7 +634,8 @@ input[type="file"]:focus {
 /* Tablet: 2 columns */
 @media (max-width: 960px) {
   .plant-grid {
-    grid-template-columns: repeat(2, 280px);
+    grid-template-columns: repeat(auto-fit, minmax(280px, 280px));
+    justify-content: center;
   }
 }
 

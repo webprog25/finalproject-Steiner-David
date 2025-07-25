@@ -43,6 +43,7 @@ db.plants.insertMany([
     imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQE6VEbRsJyvQUwOT8H4vGev8my_IuUyW8Fyg&s"
   },
   {
+    owner,
     nickname: "Aloe",
     species: "Aloe Vera",
     frequencyDays: 10,

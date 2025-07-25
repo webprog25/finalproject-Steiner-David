@@ -8,7 +8,6 @@ const form = document.getElementById("edit-form");
 const cancelBtn = document.getElementById("edit-cancel");
 
 
-// Open and pre-fill the modal, then call onSave(updates) when submitted
 function openEditModal(plant, onSave) {
   modal.hidden = false;
   form.nickname.value = plant.nickname;
@@ -29,7 +28,6 @@ function closeEditModal() {
   modal.hidden = true;
 }
 
-// Cancel or backdrop click closes without saving
 cancelBtn.addEventListener("click", closeEditModal);
 modal.querySelector(".modal-backdrop")
   .addEventListener("click", closeEditModal);
@@ -53,7 +51,6 @@ class PlantCard {
     const article = document.createElement("article");
     article.className = "plant-card";
 
-    // Compute badge text & color
     const daysAgo = Math.round(
       (Date.now() - new Date(this.plant.lastWatered)) /
       (1000 * 60 * 60 * 24)
@@ -166,7 +163,6 @@ function renderStatusChart(plants) {
 
   if (total === 0) {
     if (statusChart) { statusChart.destroy(); statusChart = null; }
-    // write message into the stats box
     const box = document.getElementById("stats");
     if (box) box.querySelector("h3").textContent = "No plants yet";
     return;
@@ -233,7 +229,6 @@ async function loadPlants() {
 async function reloadPlantsPreserveScroll() {
   const y = window.scrollY;
   await loadPlants();                  // re-fetch + rebuild + update chart
-  // use rAF to ensure layout complete before restoring scroll
   requestAnimationFrame(() => window.scrollTo(0, y));
 }
 

@@ -7,15 +7,9 @@ Your Name: David Steiner
 
 Overview
 --------
-Plant Pal is a simple houseplant watering tracker. It displays your plants as a responsive grid of cards (photo, nickname, species, watering frequency), color‐codes how many days have passed since you last watered each plant, and lets you:
-
-* Water Now (updates its “lastWatered” timestamp)
-
-* Edit plant details in a modal dialog
-
-* Delete plants
-
-* Add new plants. Where you can upload a picture of the plant via drag-and-drop or URL, with live preview and validation of the file format
+Plant Pal is a personal houseplant watering tracker that helps you remember when each of your plants needs water. 
+After signing in with Google, you can add your own plants (with photos), and the app color-codes each plant’s watering status. 
+A live doughnut chart gives you a summary of all your plants’ needs.
 
 Running
 -------
@@ -25,19 +19,35 @@ Do I need to load data from init_db.mongodb? Yes
 
 Features
 --------
-* Dashboard: 1–3 cards per row, always centered.
+- **User Authentication**  
+  Sign in with Google, so each user sees only their own plants.
 
-* Legend: explains badge colors and days-since-watering; hover shows tooltip.
+- **Responsive Dashboard**  
+  A centered grid of plant cards (1–3 columns depending on viewport).
 
-* Add-Plant Form: drag-and-drop picture uploader (only images) with a clear button, or image URL.
+- **Color‐Coded Status**  
+  Badges are green/yellow/red based on how close you are to the next watering date.
 
-* Inline Watering: “Water now” button updates the database and badge without a full reload.
+- **Interactive Chart**  
+  A Doughnut chart shows the count of plants “On Track,” “Due Soon,” or “Overdue.”
 
-* Modal Edit: clean popup form for editing nickname, species, and frequency.
+- **Add Plant**  
+  Drag-and-drop image uploader (file or URL), with live preview and format validation.
 
-* Delete: remove unwanted plants with a confirmation prompt.
+- **Water Now**  
+  Click the button to update `lastWatered` in-place (no full page reload), and chart updates instantly.
 
-* Mobile-friendly: responsive grid and forms collapse to a single column on phones.
+- **Edit Plant**  
+  Modal dialog to change nickname, species, or watering frequency.
+
+- **Delete Plant**  
+  Confirm then remove the card in-place; chart animates to show the new counts.
+
+- **Persistent API Key**  
+  Stored in `localStorage` so you stay signed in across pages and reloads.
+
+- **Protected Routes**  
+  All `/api/plants` endpoints require a valid JWT; unauthenticated users see an intro message and cannot access protected actions.
 
 Collaboration and libraries
 ---------------------------
