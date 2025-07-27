@@ -8,15 +8,12 @@
   <link rel="icon" type="image/svg+xml" href="icons/favicon.svg" />
 
   <script>
-    // Early auth gate: bounce anonymous users back to the dashboard
     (function () {
       try {
         if (!localStorage.getItem("apiKey")) {
-          // replace() so "Back" doesn't bounce them right back here
           window.location.replace("index.html?signin=1");
         }
       } catch (e) {
-        // If localStorage is blocked, treat as logged out
         window.location.replace("index.html?signin=1");
       }
     })();

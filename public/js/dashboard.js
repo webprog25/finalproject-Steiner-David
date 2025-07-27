@@ -157,7 +157,9 @@ function renderStatusChart(plants) {
   if (!el) return;
 
   const counts = { green: 0, yellow: 0, red: 0 };
-  plants.forEach(p => counts[plantStatus(p)]++);
+  for (const p of plants) {
+    counts[plantStatus(p)]++;
+  }
 
   const total = counts.green + counts.yellow + counts.red;
 
@@ -168,7 +170,6 @@ function renderStatusChart(plants) {
     return;
   }
 
-  // destroy prior chart (if any) before re-creating
   if (statusChart) {
     statusChart.destroy();
     statusChart = null;
@@ -204,7 +205,6 @@ function renderStatusChart(plants) {
 async function loadPlants() {
   const grid = document.getElementById("grid");
   grid.innerHTML = "";
-  // if not logged in, show message and skip server call
   if (!API_KEY) {
     grid.innerHTML = `
      <section class="intro">
@@ -219,20 +219,19 @@ async function loadPlants() {
   }
   const res = await apiRequest("GET", "/api/plants");
   const plants = await res.json();
-  plants.forEach(p => {
+  for (const p of plants) {
     const card = new PlantCard(p);
     grid.appendChild(card.element);
-  });
+  }
   renderStatusChart(plants);
 }
 
 async function reloadPlantsPreserveScroll() {
   const y = window.scrollY;
-  await loadPlants();                  // re-fetch + rebuild + update chart
+  await loadPlants();
   requestAnimationFrame(() => window.scrollTo(0, y));
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  // set up nav + auth, then call loadPlants() when logged in
   initAuthUi(loadPlants);
 });

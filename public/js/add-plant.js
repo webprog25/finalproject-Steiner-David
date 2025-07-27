@@ -3,20 +3,20 @@ import { initAuthUi, apiRequest, API_KEY } from "./auth-ui.js";
 
 function handleAuthChange() {
   if (!API_KEY) {
-    // use replace so Back doesn't drop them right back here
     window.location.replace("index.html?signin=1");
     return;
   }
-  // user is logged in;
   const form = document.getElementById("plant-form");
   if (form) {
-    form.querySelectorAll("input, button").forEach(el => (el.disabled = false));
+    const controls = form.querySelectorAll("input, button");
+    for (const el of controls) {
+      el.disabled = false;
+    }
     const note = document.getElementById("signin-note");
     if (note) note.remove();
   }
 }
 
-// File uploader 
 function setupFileUploader() {
   const uploader = document.getElementById("file-uploader");
   const input = uploader.querySelector("input[type=file]");
@@ -71,7 +71,6 @@ function setupFileUploader() {
     }
   });
 
-  // Clear selection
   clearBtn.addEventListener("click", (e) => {
     e.stopPropagation();
     input.value = "";

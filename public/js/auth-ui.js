@@ -73,7 +73,6 @@ export function initAuthUi(onLogin) {
         });
     }
 
-    // initial state
     if (API_KEY && USER_EMAIL) showAuthed(USER_EMAIL);
     else showAnon();
 }
