@@ -15,7 +15,7 @@ Running
 -------
 Just use `npm install` and `npm start`, but make sure the database is running before `npm start`.
 
-Do I need to load data from init_db.mongodb? Yes
+Do I need to load data from init_db.mongodb? Yes and please look into the file, before running it.
 
 Features
 --------
@@ -54,26 +54,40 @@ Collaboration and libraries
 
 - **Authentication: Sign in with Google
   Used Googles Identity Services to handle user login. 
-  Followed the CS193x lecture guidance. So I imported and adapted the provided googleauth.js to obtain an ID token on the frontend, then verify that token on the backend to issue a JWT for secure API access.
+  Followed the CS193x lecture guidance. So I imported the provided googleauth.js to obtain an ID token on the frontend, then verify that token on the backend to issue a JWT for secure API access.
 
 - **Data Visualization: Chart.js
   Imported Chart.js from jsDelivr (import "https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js") to render the watering-status doughnut chart. 
   As mentioned on the lecture website
 
 - **Not covered in the lecture:
-  Scroll-Preserving Reload: prevents the page from jumping back to the top after watering, editing, or deleting a plant by remembering your scroll position and restoring it. 
-  Sources:  https://developer.mozilla.org/docs/Web/API/Window/scrollTo
-            https://developer.mozilla.org/docs/Web/API/window/requestAnimationFrame
 
-  File Uploads: Data URLs + Drag-and-Drop
-  Converted uploads to data URLs like the CS193x lecture and added a drag-and-drop interface for images using the 
-  HTML Drag-and-Drop and live previews: https://developer.mozilla.org/de/docs/Web/API/HTML_Drag_and_Drop_API
-                                        https://developer.mozilla.org/de/docs/Web/API/FileReader
-  
-  The idea behind the cards may seem similar to Frank Schneider's and my own project, "PokeBuild", from the "WebProjekt" course.
-  However, the cards in PokeBuild are not filled with user input like this project. 
-  They are filled with API data, and the data on the cards is fixed. Therefore, there is no editing as in this project.
-  Therefore, the two projects only share the 'card' theme, which I also found suitable for this project.
-  Furthermore, since you have access to the PokeBuild GitLab, you can check that I implemented the card idea two months ago in commit 'e8c69113' so I assume that this will not be a problem.
+    Scroll-Preserving Reload: prevents the page from jumping back to the top after watering, editing, or deleting a plant by remembering your scroll position and restoring it. 
+    Sources:  https://developer.mozilla.org/docs/Web/API/Window/scrollTo
+              https://developer.mozilla.org/docs/Web/API/window/requestAnimationFrame
+
+    File Uploads: Data URLs + Drag-and-Drop
+    Converted uploads to data URLs like the CS193x lecture and added a drag-and-drop interface for images using the 
+    HTML Drag-and-Drop and live previews: https://developer.mozilla.org/de/docs/Web/API/HTML_Drag_and_Drop_API
+                                          https://developer.mozilla.org/de/docs/Web/API/FileReader
+
+    Edit Plant: Modal Dialog
+    Modal overlay to edit plant details in-place.
+    Source: https://developer.mozilla.org/de/docs/Web/HTML/Reference/Elements/dialog
+
+    Protected Page Redirects
+    In add.html’s <head>, an inline IIFE runs before any other code to check for the stored API key.
+    This ensures unauthenticated users never see the form.
+    Source: https://developer.mozilla.org/de/docs/Web/API/Location/replace
+
+    Responsive Layouts: @media 
+    I used CSS media queries (e.g. @media (max-width: 960px) and @media (max-width: 650px)) to adjust the plant grid and navbar for tablet and mobile layouts.
+    Source: https://developer.mozilla.org/docs/Web/CSS/Media_Queries/Using_media_queries 
+
+    The idea behind the cards may seem similar to Frank Schneider's and my own project, "PokeBuild", from the "WebProjekt" course.
+    However, the cards in PokeBuild are not filled with user input like this project. 
+    They are filled with API data, and the data on the cards is fixed. Therefore, there is no editing as in this project.
+    Therefore, the two projects only share the 'card' theme, which I also found suitable for this project.
+    Furthermore, since you have access to the PokeBuild GitLab, you can check that I implemented the card idea two months ago in commit 'e8c69113' so I assume that this will not be a problem.
 
 

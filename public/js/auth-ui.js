@@ -30,7 +30,15 @@ export function initAuthUi(onLogin) {
     const stats = document.getElementById("stats");
 
     function showAuthed(email) {
-        if (host) host.innerHTML = `<span class="user-greeting">Hi, ${email}</span>`;
+        if (host) {
+            while (host.firstChild) {
+                host.removeChild(host.firstChild);
+            }
+            const span = document.createElement("span");
+            span.className = "user-greeting";
+            span.textContent = `Hi, ${email}`;
+            host.appendChild(span);
+        }
         if (logoutBtn) logoutBtn.hidden = false;
         if (addLink) addLink.hidden = false;
         if (legend) legend.hidden = false;
@@ -40,7 +48,9 @@ export function initAuthUi(onLogin) {
 
     function showAnon() {
         if (host) {
-            host.innerHTML = "";
+            while (host.firstChild) {
+                host.removeChild(host.firstChild);
+            }
             const auth = new GoogleAuth(CLIENT_ID);
             auth.render(host, async (idToken) => {
                 const res = await apiRequest("POST", "/api/google", { idToken });

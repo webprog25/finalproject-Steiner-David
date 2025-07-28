@@ -2,7 +2,7 @@ use plantsdb;
 db.dropDatabase()
 
 
-const owner = "geldgans@gmail.com";  // the address you’ll log in with
+const owner = "geldgans@gmail.com";  // Change this to the address that you will use to log in, so that you have some plants at the beginning. 
 
 // Insert sample plants with lastWatered a few days ago
 db.plants.insertMany([

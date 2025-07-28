@@ -62,32 +62,56 @@ class PlantCard {
       { year: "numeric", month: "short", day: "numeric" }
     );
 
-    article.innerHTML = `
-      <!-- Top actions (edit/delete) -->
-      <div class="card-actions-top">
-        <img src="icons/edit.svg" class="btn-edit" title="Edit" />
-        <img src="icons/delete.svg" class="btn-delete" title="Delete" />
-      </div>
+    const actionsTop = document.createElement("div");
+    actionsTop.className = "card-actions-top";
+    const editImg = document.createElement("img");
+    editImg.src = "icons/edit.svg";
+    editImg.className = "btn-edit";
+    editImg.title = "Edit";
+    const delImg = document.createElement("img");
+    delImg.src = "icons/delete.svg";
+    delImg.className = "btn-delete";
+    delImg.title = "Delete";
+    actionsTop.append(editImg, delImg);
+    article.appendChild(actionsTop);
 
-      <img src="${this.plant.imageUrl}" alt="${this.plant.nickname}" />
+    // Plant image
+    const plantImg = document.createElement("img");
+    plantImg.src = this.plant.imageUrl;
+    plantImg.alt = this.plant.nickname;
+    article.appendChild(plantImg);
 
-      <div class="card-content">
-        <h2>${this.plant.nickname}</h2>
-        <p class="species">Species: ${this.plant.species}</p>
-        <p class="frequency">Watering Frequency: ${this.plant.frequencyDays} days</p>
-        <span class="badge ${color}" title="Last watered: ${lastDate}">
-          ${daysAgo} days since last watering
-        </span>
-      </div>
+    // Card content
+    const content = document.createElement("div");
+    content.className = "card-content";
+    const h2 = document.createElement("h2");
+    h2.textContent = this.plant.nickname;
+    const pSpecies = document.createElement("p");
+    pSpecies.className = "species";
+    pSpecies.textContent = `Species: ${this.plant.species}`;
+    const pFreq = document.createElement("p");
+    pFreq.className = "frequency";
+    pFreq.textContent = `Watering Frequency: ${this.plant.frequencyDays} days`;
+    const badge = document.createElement("span");
+    badge.className = `badge ${color}`;
+    badge.title = `Last watered: ${lastDate}`;
+    badge.textContent = `${daysAgo} days since last watering`;
+    content.append(h2, pSpecies, pFreq, badge);
+    article.appendChild(content);
 
-      <!-- Bottom actions: water button + badge -->
-      <div class="card-actions-bottom">
-        <button class="btn-water" title="Water now">
-          <img src="icons/water.svg" alt="" />
-          Water now
-        </button>
-      </div>
-    `;
+    // Bottom actions
+    const actionsBottom = document.createElement("div");
+    actionsBottom.className = "card-actions-bottom";
+    const waterBtn = document.createElement("button");
+    waterBtn.className = "btn-water";
+    waterBtn.title = "Water now";
+    const waterImg = document.createElement("img");
+    waterImg.src = "icons/water.svg";
+    waterImg.alt = "";
+    waterBtn.append(waterImg, document.createTextNode(" Water now"));
+    actionsBottom.appendChild(waterBtn);
+    article.appendChild(actionsBottom);
+
     return article;
   }
 
@@ -204,19 +228,32 @@ function renderStatusChart(plants) {
 
 async function loadPlants() {
   const grid = document.getElementById("grid");
-  grid.innerHTML = "";
+
+  while (grid.firstChild) {
+    grid.removeChild(grid.firstChild);
+  }
+
   if (!API_KEY) {
-    grid.innerHTML = `
-     <section class="intro">
-       <h2>Welcome to Plant Pal</h2>
-       <p class="intro-text">
-         Plant Pal helps you keep your houseplants happy by tracking when they need water.
-         Sign in with Google to view and manage your personal plant collection.
-       </p>
-     </section>
-   `;
+    const intro = document.createElement("section");
+    intro.className = "intro";
+
+
+    const heading = document.createElement("h2");
+    heading.textContent = "Welcome to Plant Pal";
+    intro.appendChild(heading);
+
+    const para = document.createElement("p");
+    para.className = "intro-text";
+    para.textContent =
+      "Plant Pal helps you keep your houseplants happy by tracking when they need water. " +
+      "Sign in with Google to view and manage your personal plant collection.";
+    intro.appendChild(para);
+
+    grid.appendChild(intro);
+
     return;
   }
+
   const res = await apiRequest("GET", "/api/plants");
   const plants = await res.json();
   for (const p of plants) {
