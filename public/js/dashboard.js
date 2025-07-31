@@ -127,37 +127,49 @@ class PlantCard {
 
   async handleWater(button) {
     button.classList.add("pressed");
-    const res = await apiRequest("PATCH", `/api/plants/${this.plant._id}`, { lastWatered: new Date() });
-    if (!res.ok) {
-      alert("You must be logged in to water plants.");
-      button.classList.remove("pressed");
-      return;
+    try {
+      const res = await apiRequest("PATCH", `/api/plants/${this.plant._id}`, { lastWatered: new Date() });
+      if (!res.ok) {
+        alert("You must be logged in to water plants.");
+        return;
+      }
+      await reloadPlantsPreserveScroll();
+    } catch (err) {
+      alert(`Error watering plant: ${err.message}`);
+    } finally {
+      setTimeout(() => button.classList.remove("pressed"), 300);
     }
-    await reloadPlantsPreserveScroll();
-    setTimeout(() => button.classList.remove("pressed"), 300);
   }
 
   handleEdit() {
     openEditModal(this.plant, async (updates) => {
-      const res = await apiRequest("PATCH", `/api/plants/${this.plant._id}`, updates);
-      if (!res.ok) {
-        alert("You must be logged in to edit plants.");
-        return;
+      try {
+        const res = await apiRequest("PATCH", `/api/plants/${this.plant._id}`, updates);
+        if (!res.ok) {
+          alert("You must be logged in to edit plants.");
+          return;
+        }
+        await reloadPlantsPreserveScroll();
+      } catch (err) {
+        alert(`Error editing plant: ${err.message}`);
       }
-
-      await reloadPlantsPreserveScroll();
     });
   }
 
   async handleDelete() {
-    if (!confirm(`Do you really want to delete "${this.plant.nickname}"?`)) return;
-
-    const res = await apiRequest("DELETE", `/api/plants/${this.plant._id}`);
-    if (!res.ok) {
-      alert("You must be logged in to delete plants.");
+    if (!confirm(`Do you really want to delete "${this.plant.nickname}"?`)) {
       return;
     }
-    await reloadPlantsPreserveScroll();
+    try {
+      const res = await apiRequest("DELETE", `/api/plants/${this.plant._id}`);
+      if (!res.ok) {
+        alert("You must be logged in to delete plants.");
+        return;
+      }
+      await reloadPlantsPreserveScroll();
+    } catch (err) {
+      alert(`Error deleting plant: ${err.message}`);
+    }
   }
 
   refresh() {
@@ -254,13 +266,24 @@ async function loadPlants() {
     return;
   }
 
-  const res = await apiRequest("GET", "/api/plants");
-  const plants = await res.json();
-  for (const p of plants) {
-    const card = new PlantCard(p);
-    grid.appendChild(card.element);
+  try {
+    const res = await apiRequest("GET", "/api/plants");
+
+    if (!res.ok) {
+      alert(`Error loading plants: ${res.status} ${res.statusText}`);
+      return;
+    }
+
+    const plants = await res.json();
+    for (const p of plants) {
+      const card = new PlantCard(p);
+      grid.appendChild(card.element);
+    }
+    renderStatusChart(plants);
+
+  } catch (err) {
+    alert(`Error loading plants: ${err.message}`);
   }
-  renderStatusChart(plants);
 }
 
 async function reloadPlantsPreserveScroll() {

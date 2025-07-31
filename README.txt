@@ -22,6 +22,9 @@ Features
 - **User Authentication**  
   Sign in with Google, so each user sees only their own plants.
 
+- **Automatic Logout on Session Expiry**  
+  Automatically logs the user out with an alert when their session token expires, keeping the UI in sync with authentication state.
+
 - **Responsive Dashboard**  
   A centered grid of plant cards (1–3 columns depending on viewport).
 
@@ -49,45 +52,77 @@ Features
 - **Protected Routes**  
   All `/api/plants` endpoints require a valid JWT; unauthenticated users see an intro message and cannot access protected actions.
 
+- **Safe PATCH Updates**  
+  The `/api/plants/:id` PATCH endpoint whitelists only `nickname`, `species`, `frequencyDays`, and `lastWatered`, preventing malicious updates to other fields.
+
 Collaboration and libraries
 ---------------------------
 
-- **Authentication: Sign in with Google
+I tried to stick as closely as possible to the lecture material.
+However, I wanted to use some things that were not covered in the lectures, or maybe I just missed it, to improve the usability of the website.
+Below is a list of all third-party resources and references I used in my code, along with their sources.
+
+- **Authentication: Sign in with Google**
   Used Googles Identity Services to handle user login. 
-  Followed the CS193x lecture guidance. So I imported the provided googleauth.js to obtain an ID token on the frontend, then verify that token on the backend to issue a JWT for secure API access.
+  Followed the CS193x lecture guidance and imported the provided googleauth.js.
 
-- **Data Visualization: Chart.js
-  Imported Chart.js from jsDelivr (import "https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js") to render the watering-status doughnut chart. 
-  As mentioned on the lecture website
+- **Data Visualization: Chart.js**
+  Imported Chart.js from jsDelivr (import "https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js") 
+  to render the watering-status doughnut chart. As mentioned on the lecture website
 
-- **Not covered in the lecture:
+- **Not covered in the lecture:**
 
-    Scroll-Preserving Reload: prevents the page from jumping back to the top after watering, editing, or deleting a plant by remembering your scroll position and restoring it. 
+    Scroll-Preserving Reload: prevents the page from jumping back to the top after watering, editing, 
+    or deleting a plant by remembering your scroll position and restoring it. 
     Sources:  https://developer.mozilla.org/docs/Web/API/Window/scrollTo
               https://developer.mozilla.org/docs/Web/API/window/requestAnimationFrame
 
     File Uploads: Data URLs + Drag-and-Drop
     Converted uploads to data URLs like the CS193x lecture and added a drag-and-drop interface for images using the 
-    HTML Drag-and-Drop and live previews: https://developer.mozilla.org/de/docs/Web/API/HTML_Drag_and_Drop_API
-                                          https://developer.mozilla.org/de/docs/Web/API/FileReader
+    HTML Drag-and-Drop and live previews: 
+    Sources:  https://developer.mozilla.org/de/docs/Web/API/HTML_Drag_and_Drop_API
+              https://developer.mozilla.org/de/docs/Web/API/FileReader
 
     Edit Plant: Modal Dialog
     Modal overlay to edit plant details in-place.
     Source: https://developer.mozilla.org/de/docs/Web/HTML/Reference/Elements/dialog
 
-    Protected Page Redirects
+    Protected Page Redirects:
     In add.html’s <head>, an inline IIFE runs before any other code to check for the stored API key.
     This ensures unauthenticated users never see the form.
     Source: https://developer.mozilla.org/de/docs/Web/API/Location/replace
 
+
+    Auto-Logout:
+    Parse the JWT’s exp claim and use setTimeout to automatically log the user out when their token expires.
+    This ensures the user sees an alert and is returned to the anonymous UI exactly at session expiry.
+    Sources:  https://stackoverflow.com/questions/39926104/what-format-is-the-exp-expiration-time-claim-in-a-jwt
+              https://developer.mozilla.org/en-US/docs/Web/API/Window/atob
+              https://stackoverflow.com/questions/38552003/how-to-decode-jwt-token-in-javascript-without-using-a-library
+
     Responsive Layouts: @media 
     I used CSS media queries (e.g. @media (max-width: 960px) and @media (max-width: 650px)) to adjust the plant grid and navbar for tablet and mobile layouts.
-    Source: https://developer.mozilla.org/docs/Web/CSS/Media_Queries/Using_media_queries 
+    Source: https://developer.mozilla.org/docs/Web/CSS/Media_Queries/Using_media_queries
 
-    The idea behind the cards may seem similar to Frank Schneider's and my own project, "PokeBuild", from the "WebProjekt" course.
-    However, the cards in PokeBuild are not filled with user input like this project. 
-    They are filled with API data, and the data on the cards is fixed. Therefore, there is no editing as in this project.
+    Custom Styling:  
+    Uses CSS custom properties (`--variables`) throughout `styles.css` for easy theming.
+    Source: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_cascading_variables/Using_CSS_custom_properties
+
+    Robust Error Handling
+    All API calls check `res.ok` and wrap in `try/catch`, showing `alert(...)` for any network or server errors.
+    Sources:  https://developer.mozilla.org/en-US/docs/Web/API/Response/ok
+              https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+
+    Safe PATCH Updates  
+    The `/api/plants/:id` PATCH endpoint whitelists only allowed fields (`nickname`, `species`, `frequencyDays`, `lastWatered`), preventing malicious owner-overwrites.
+    Source: https://blog.appsignal.com/2024/07/03/security-best-practices-for-your-nodejs-application.html
+
+
+    The idea behind the cards may seem similar to Frank Schneider's and my own project, "PokeBuild", from 
+    the "WebProjekt" course.
+    However, the cards in PokeBuild are not filled with user input like this project and there is no editing as in this project.
     Therefore, the two projects only share the 'card' theme, which I also found suitable for this project.
-    Furthermore, since you have access to the PokeBuild GitLab, you can check that I implemented the card idea two months ago in commit 'e8c69113' so I assume that this will not be a problem.
+    Furthermore, since you have access to the PokeBuild GitLab, you can check that I implemented the card idea long time ago in commit 'e8c69113'. 
+    So I assume that this will not be a problem.
 
 

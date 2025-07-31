@@ -139,6 +139,7 @@ class PlantForm {
     return new Promise((resolve) => {
       const reader = new FileReader();
       reader.onload = () => resolve(reader.result);
+      reader.onerror = () => reject(new Error("Failed to read image file"));
       reader.readAsDataURL(file);
     });
   }
@@ -149,5 +150,4 @@ document.addEventListener("DOMContentLoaded", () => {
   setupFileUploader();
   const form = document.getElementById("plant-form");
   if (form) new PlantForm(form);
-  handleAuthChange;
 });

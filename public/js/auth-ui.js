@@ -5,11 +5,32 @@ export const CLIENT_ID = "995897016265-jjqb5mjsff0hbqpmgbr4siimo5ces6nh.apps.goo
 export let API_KEY = localStorage.getItem("apiKey") || null;
 export let USER_EMAIL = localStorage.getItem("email") || null;
 
+let logoutTimerId = null;
+
 export function apiRequest(method, path, body) {
     const opts = { method, headers: { "Content-Type": "application/json" } };
     if (API_KEY) opts.headers.Authorization = `Bearer ${API_KEY}`;
     if (body) opts.body = JSON.stringify(body);
     return fetch(path, opts);
+}
+
+function scheduleAutoLogout(onLogout) {
+    if (!API_KEY) return;
+    let msUntilExpiry;
+    try {
+        const [, payloadB64] = API_KEY.split(".");
+        const payload = JSON.parse(atob(payloadB64));
+        msUntilExpiry = payload.exp * 1000 - Date.now();
+        if (msUntilExpiry <= 0) throw new Error("already expired");
+    } catch {
+        onLogout();
+        return;
+    }
+    clearTimeout(logoutTimerId);
+    logoutTimerId = setTimeout(() => {
+        alert("Session expired. You’ve been logged out.");
+        onLogout();
+    }, msUntilExpiry);
 }
 
 const BTN_OPTS = {
@@ -29,6 +50,18 @@ export function initAuthUi(onLogin) {
     const legend = document.querySelector("section.legend");
     const stats = document.getElementById("stats");
 
+
+    function handleLogout() {
+        clearTimeout(logoutTimerId);
+        API_KEY = null;
+        USER_EMAIL = null;
+        localStorage.removeItem("apiKey");
+        localStorage.removeItem("email");
+        showAnon();
+        if (onLogin) onLogin();
+    }
+
+
     function showAuthed(email) {
         if (host) {
             while (host.firstChild) {
@@ -44,6 +77,7 @@ export function initAuthUi(onLogin) {
         if (legend) legend.hidden = false;
         if (stats) stats.hidden = false;
         if (onLogin) onLogin();
+        scheduleAutoLogout(handleLogout);
     }
 
     function showAnon() {
@@ -70,19 +104,15 @@ export function initAuthUi(onLogin) {
         if (addLink) addLink.hidden = true;
         if (legend) legend.hidden = true;
         if (stats) stats.hidden = true;
+    }
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", handleLogout);
+    }
+
+    if (API_KEY && USER_EMAIL) {
+        showAuthed(USER_EMAIL);
+    } else {
+        showAnon();
         if (onLogin) onLogin();
     }
-
-    if (logoutBtn) {
-        logoutBtn.addEventListener("click", () => {
-            API_KEY = null;
-            USER_EMAIL = null;
-            localStorage.removeItem("apiKey");
-            localStorage.removeItem("email");
-            showAnon();
-        });
-    }
-
-    if (API_KEY && USER_EMAIL) showAuthed(USER_EMAIL);
-    else showAnon();
 }

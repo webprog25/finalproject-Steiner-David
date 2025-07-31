@@ -19,10 +19,18 @@ let Users;
 const initApi = async (app) => {
   app.use("/api", api);
 
-  let conn = await MongoClient.connect(
-    process.env.MONGO_URI || "mongodb://127.0.0.1"
-  );
-  let db = conn.db(DATABASE_NAME);
+  let conn;
+  try {
+    conn = await MongoClient.connect(
+      process.env.MONGO_URI || "mongodb://127.0.0.1:27017"
+    );
+    console.log("Connected to MongoDB");
+  } catch (err) {
+    console.error("Failed to connect to MongoDB:", err);
+    process.exit(1);
+  }
+
+  const db = conn.db(DATABASE_NAME);
   Plants = db.collection(PLANTS_COLL);
   Users = db.collection(USERS_COLL);
   await Plants.createIndex({ owner: 1 });
@@ -68,8 +76,16 @@ api.get("/plants/:id", checkAuth, async (req, res) => {
 api.patch("/plants/:id", checkAuth, async (req, res) => {
   const email = res.locals.user.email;
   const _id = new ObjectId(req.params.id);
-  const r = await Plants.updateOne({ _id, owner: email }, { $set: req.body });
-  if (!r.matchedCount) return res.status(404).json({ error: "Not found" });
+  const { nickname, species, frequencyDays, lastWatered } = req.body;
+  const updates = { nickname, species, frequencyDays, lastWatered };
+  const keys = Object.keys(updates);
+  for (const key of keys) {
+    if (updates[key] === undefined) {
+      delete updates[key];
+    }
+  }
+  const r = await Plants.updateOne({ _id, owner: email }, { $set: updates });
+  if (!r.matchedCount) { return res.status(404).json({ error: "Not found" }); }
   res.json({ success: true });
 });
 

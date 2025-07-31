@@ -7,6 +7,15 @@ const owner = "geldgans@gmail.com";  // Change this to the address that you will
 // Insert sample plants with lastWatered a few days ago
 db.plants.insertMany([
   {
+    owner : "nottheowner@test.com",       // To show that a user will only see the plants he owns
+    nickname: "You Should not see me",
+    species: "Test",
+    frequencyDays: 4,
+    // lastWatered 3 days ago
+    lastWatered: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/7/7b/Sunflowers_sunflower.jpg"
+  },
+  {
     owner,
     nickname: "Sunny",
     species: "Sunflower",
