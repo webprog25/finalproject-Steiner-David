@@ -662,8 +662,8 @@ input[type="file"]:focus {
 
   .site-nav #google-signin {
     order: 2;
-    position: static !important;
-    transform: none !important;
+    position: static;
+    transform: none;
     width: 100%;
     text-align: center;
     margin-bottom: 0.5rem;
@@ -679,7 +679,7 @@ input[type="file"]:focus {
 
   .site-nav .nav-links {
     order: 4;
-    display: block !important;
+    display: block;
     width: 100%;
     text-align: center;
     margin: 0.5rem 0;

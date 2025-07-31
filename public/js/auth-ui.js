@@ -18,8 +18,8 @@ function scheduleAutoLogout(onLogout) {
     if (!API_KEY) return;
     let msUntilExpiry;
     try {
-        const [, payloadB64] = API_KEY.split(".");
-        const payload = JSON.parse(atob(payloadB64));
+        let [, payloadB64] = API_KEY.split(".");
+        let payload = JSON.parse(atob(payloadB64));
         msUntilExpiry = payload.exp * 1000 - Date.now();
         if (msUntilExpiry <= 0) throw new Error("already expired");
     } catch {
@@ -85,10 +85,10 @@ export function initAuthUi(onLogin) {
             while (host.firstChild) {
                 host.removeChild(host.firstChild);
             }
-            const auth = new GoogleAuth(CLIENT_ID);
+            let auth = new GoogleAuth(CLIENT_ID);
             auth.render(host, async (idToken) => {
-                const res = await apiRequest("POST", "/api/google", { idToken });
-                const data = await res.json();
+                let res = await apiRequest("POST", "/api/google", { idToken });
+                let data = await res.json();
                 if (!res.ok) {
                     alert(data.error || "Login failed");
                     return;

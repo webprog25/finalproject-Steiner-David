@@ -40,8 +40,8 @@ class PlantCard {
   }
 
   getBadgeColor() {
-    const ms = Date.now() - new Date(this.plant.lastWatered).getTime();
-    const days = ms / (1000 * 60 * 60 * 24);
+    let ms = Date.now() - new Date(this.plant.lastWatered).getTime();
+    let days = ms / (1000 * 60 * 60 * 24);
     if (days < this.plant.frequencyDays * 0.75) return "green";
     if (days < this.plant.frequencyDays) return "yellow";
     return "red";
@@ -51,13 +51,13 @@ class PlantCard {
     const article = document.createElement("article");
     article.className = "plant-card";
 
-    const daysAgo = Math.round(
+    let daysAgo = Math.round(
       (Date.now() - new Date(this.plant.lastWatered)) /
       (1000 * 60 * 60 * 24)
     );
-    const color = this.getBadgeColor();
+    let color = this.getBadgeColor();
 
-    const lastDate = new Date(this.plant.lastWatered).toLocaleDateString(
+    let lastDate = new Date(this.plant.lastWatered).toLocaleDateString(
       undefined,
       { year: "numeric", month: "short", day: "numeric" }
     );
@@ -99,7 +99,6 @@ class PlantCard {
     content.append(h2, pSpecies, pFreq, badge);
     article.appendChild(content);
 
-    // Bottom actions
     const actionsBottom = document.createElement("div");
     actionsBottom.className = "card-actions-bottom";
     const waterBtn = document.createElement("button");
@@ -128,7 +127,7 @@ class PlantCard {
   async handleWater(button) {
     button.classList.add("pressed");
     try {
-      const res = await apiRequest("PATCH", `/api/plants/${this.plant._id}`, { lastWatered: new Date() });
+      let res = await apiRequest("PATCH", `/api/plants/${this.plant._id}`, { lastWatered: new Date() });
       if (!res.ok) {
         alert("You must be logged in to water plants.");
         return;
@@ -144,7 +143,7 @@ class PlantCard {
   handleEdit() {
     openEditModal(this.plant, async (updates) => {
       try {
-        const res = await apiRequest("PATCH", `/api/plants/${this.plant._id}`, updates);
+        let res = await apiRequest("PATCH", `/api/plants/${this.plant._id}`, updates);
         if (!res.ok) {
           alert("You must be logged in to edit plants.");
           return;
@@ -161,7 +160,7 @@ class PlantCard {
       return;
     }
     try {
-      const res = await apiRequest("DELETE", `/api/plants/${this.plant._id}`);
+      let res = await apiRequest("DELETE", `/api/plants/${this.plant._id}`);
       if (!res.ok) {
         alert("You must be logged in to delete plants.");
         return;
@@ -181,8 +180,8 @@ class PlantCard {
 }
 
 function plantStatus(plant) {
-  const ms = Date.now() - new Date(plant.lastWatered).getTime();
-  const days = ms / (1000 * 60 * 60 * 24);
+  let ms = Date.now() - new Date(plant.lastWatered).getTime();
+  let days = ms / (1000 * 60 * 60 * 24);
   if (days < plant.frequencyDays * 0.75) return "green";
   if (days < plant.frequencyDays) return "yellow";
   return "red";
@@ -192,12 +191,12 @@ function renderStatusChart(plants) {
   const el = document.getElementById("statusChart");
   if (!el) return;
 
-  const counts = { green: 0, yellow: 0, red: 0 };
-  for (const p of plants) {
+  let counts = { green: 0, yellow: 0, red: 0 };
+  for (let p of plants) {
     counts[plantStatus(p)]++;
   }
 
-  const total = counts.green + counts.yellow + counts.red;
+  let total = counts.green + counts.yellow + counts.red;
 
   if (total === 0) {
     if (statusChart) { statusChart.destroy(); statusChart = null; }
@@ -207,8 +206,9 @@ function renderStatusChart(plants) {
   }
 
   if (statusChart) {
-    statusChart.destroy();
-    statusChart = null;
+    statusChart.data.datasets[0].data = [counts.green, counts.yellow, counts.red];
+    statusChart.update();
+    return;
   }
 
   statusChart = new Chart(el, {
@@ -239,7 +239,7 @@ function renderStatusChart(plants) {
 
 
 async function loadPlants() {
-  const grid = document.getElementById("grid");
+  let grid = document.getElementById("grid");
 
   while (grid.firstChild) {
     grid.removeChild(grid.firstChild);
@@ -267,15 +267,15 @@ async function loadPlants() {
   }
 
   try {
-    const res = await apiRequest("GET", "/api/plants");
+    let res = await apiRequest("GET", "/api/plants");
 
     if (!res.ok) {
       alert(`Error loading plants: ${res.status} ${res.statusText}`);
       return;
     }
 
-    const plants = await res.json();
-    for (const p of plants) {
+    let plants = await res.json();
+    for (let p of plants) {
       const card = new PlantCard(p);
       grid.appendChild(card.element);
     }
@@ -287,7 +287,7 @@ async function loadPlants() {
 }
 
 async function reloadPlantsPreserveScroll() {
-  const y = window.scrollY;
+  let y = window.scrollY;
   await loadPlants();
   requestAnimationFrame(() => window.scrollTo(0, y));
 }

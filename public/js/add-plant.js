@@ -9,7 +9,7 @@ function handleAuthChange() {
   const form = document.getElementById("plant-form");
   if (form) {
     const controls = form.querySelectorAll("input, button");
-    for (const el of controls) {
+    for (let el of controls) {
       el.disabled = false;
     }
     const note = document.getElementById("signin-note");
@@ -25,8 +25,8 @@ function setupFileUploader() {
   const placeholder = uploader.querySelector("p");
 
   // Open file picker on click (but not when clicking “clear”)
-  uploader.addEventListener("click", (e) => {
-    if (e.target === clearBtn) return;
+  uploader.addEventListener("click", (ev) => {
+    if (ev.target === clearBtn) return;
     input.click();
   });
 
@@ -50,29 +50,29 @@ function setupFileUploader() {
     showFile(file);
   });
 
-  uploader.addEventListener("dragover", (e) => {
-    e.preventDefault();
+  uploader.addEventListener("dragover", (ev) => {
+    ev.preventDefault();
     uploader.classList.add("dragover");
   });
   uploader.addEventListener("dragleave", () => {
     uploader.classList.remove("dragover");
   });
-  uploader.addEventListener("drop", (e) => {
-    e.preventDefault();
+  uploader.addEventListener("drop", (ev) => {
+    ev.preventDefault();
     uploader.classList.remove("dragover");
-    const file = e.dataTransfer.files[0];
+    const file = ev.dataTransfer.files[0];
     if (file) {
       if (!file.type.startsWith("image/")) {
         alert("Only image files are allowed. Please drop a .jpg, .png, or similar.");
         return;
       }
-      input.files = e.dataTransfer.files;
+      input.files = ev.dataTransfer.files;
       showFile(file);
     }
   });
 
-  clearBtn.addEventListener("click", (e) => {
-    e.stopPropagation();
+  clearBtn.addEventListener("click", (ev) => {
+    ev.stopPropagation();
     input.value = "";
     preview.src = "";
     preview.hidden = true;
@@ -84,7 +84,7 @@ function setupFileUploader() {
 class PlantForm {
   constructor(form) {
     this.form = form;
-    this.form.addEventListener("submit", (e) => this.onSubmit(e));
+    this.form.addEventListener("submit", (ev) => this.onSubmit(ev));
   }
 
   async onSubmit(event) {
@@ -120,7 +120,7 @@ class PlantForm {
     console.log("Payload:", payload);
 
     try {
-      const res = await apiRequest("POST", "/api/plants", payload)
+      let res = await apiRequest("POST", "/api/plants", payload)
       console.log("Response status:", res.status);
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));

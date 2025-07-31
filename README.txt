@@ -28,6 +28,9 @@ Features
 - **Responsive Dashboard**  
   A centered grid of plant cards (1–3 columns depending on viewport).
 
+- **Responsive Design**  
+  Includes `@media` breakpoints and a mobile-friendly viewport meta tag for phone/tablet layouts.
+
 - **Color‐Coded Status**  
   Badges are green/yellow/red based on how close you are to the next watering date.
 
@@ -45,6 +48,9 @@ Features
 
 - **Delete Plant**  
   Confirm then remove the card in-place; chart animates to show the new counts.
+
+- **Scroll-Preserving Reload**  
+  Remembers and restores the users scroll position after watering, editing, or deleting plants so the page does not jump back to the top.
 
 - **Persistent API Key**  
   Stored in `localStorage` so you stay signed in across pages and reloads.
@@ -92,7 +98,6 @@ Below is a list of all third-party resources and references I used in my code, a
     This ensures unauthenticated users never see the form.
     Source: https://developer.mozilla.org/de/docs/Web/API/Location/replace
 
-
     Auto-Logout:
     Parse the JWT’s exp claim and use setTimeout to automatically log the user out when their token expires.
     This ensures the user sees an alert and is returned to the anonymous UI exactly at session expiry.
@@ -118,11 +123,10 @@ Below is a list of all third-party resources and references I used in my code, a
     Source: https://blog.appsignal.com/2024/07/03/security-best-practices-for-your-nodejs-application.html
 
 
-    The idea behind the cards may seem similar to Frank Schneider's and my own project, "PokeBuild", from 
+    The idea behind the "cards" may seem similar to Frank Schneider's and my own project, "PokeBuild", from 
     the "WebProjekt" course.
     However, the cards in PokeBuild are not filled with user input like this project and there is no editing as in this project.
     Therefore, the two projects only share the 'card' theme, which I also found suitable for this project.
     Furthermore, since you have access to the PokeBuild GitLab, you can check that I implemented the card idea long time ago in commit 'e8c69113'. 
-    So I assume that this will not be a problem.
 
 
