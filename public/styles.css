@@ -523,57 +523,36 @@ input[type="file"]:focus {
   outline: none;
 }
 
-.modal {
+dialog {
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0;
+  max-width: 320px;
+  width: 90%;
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 200;
 }
 
-.modal[hidden] {
-  display: none;
-}
 
-.modal-backdrop {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+dialog::backdrop {
   background: rgba(0, 0, 0, 0.5);
 }
 
-.modal-content {
-  position: relative;
-  background: var(--color-white);
+dialog h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+form#edit-form {
+  background-color: var(--color-white);
   padding: 1.5rem;
   border-radius: 0.5rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  width: 320px;
-  max-width: 90%;
-  z-index: 1;
-}
-
-.modal-content h2 {
-  margin-bottom: 1rem;
-  font-size: 1.25rem;
-  color: var(--color-green);
-}
-
-.edit-form {
-  background-color: var(--color-white);
-  padding: 2rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  grid-gap: 1rem;
-  margin: 0;
+  grid-template-columns: 1fr;
+  gap: 1rem;
 }
 
 .edit-form .form-row {
@@ -591,18 +570,24 @@ input[type="file"]:focus {
   border: 1px solid var(--color-gray-medium);
   border-radius: 0.25rem;
   font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.modal-actions {
-  grid-column: 1 / -1;
+.edit-form input:hover,
+.edit-form input:focus {
+  border-color: var(--color-green);
+  box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.2);
+  outline: none;
+}
+
+menu.modal-actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   gap: 0.5rem;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
 }
 
-.modal-actions button[type="submit"],
-.modal-actions #edit-cancel {
+menu.modal-actions button {
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
   border-radius: 0.5rem;
@@ -611,23 +596,23 @@ input[type="file"]:focus {
   transition: background-color 0.2s;
 }
 
-.modal-actions button[type="submit"] {
+menu.modal-actions button[value="save"] {
   background-color: var(--color-green);
   color: var(--color-white);
 }
 
-.modal-actions button[type="submit"]:hover,
-.modal-actions button[type="submit"]:focus {
+menu.modal-actions button[value="save"]:hover,
+menu.modal-actions button[value="save"]:focus {
   background-color: var(--color-green-light);
 }
 
-.modal-actions #edit-cancel {
+menu.modal-actions button#edit-cancel {
   background-color: var(--color-gray-medium);
   color: var(--color-white);
 }
 
-.modal-actions #edit-cancel:hover,
-.modal-actions #edit-cancel:focus {
+menu.modal-actions button#edit-cancel:hover,
+menu.modal-actions button#edit-cancel:focus {
   background-color: #999;
 }
 

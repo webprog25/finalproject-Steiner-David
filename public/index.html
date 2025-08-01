@@ -40,30 +40,31 @@
     </section>
     <section id="grid" class="plant-grid"></section>
   </main>
-  <div id="edit-modal" class="modal" hidden>
-    <div class="modal-backdrop"></div>
-    <div class="modal-content">
+  <dialog id="edit-modal">
+    <form id="edit-form" method="dialog" class="edit-form">
       <h2>Edit Plant</h2>
-      <form id="edit-form" class="edit-form">
-        <div class="form-row">
-          <label for="edit-nickname">Nickname</label>
-          <input id="edit-nickname" name="nickname" type="text" required />
-        </div>
-        <div class="form-row">
-          <label for="edit-species">Species</label>
-          <input id="edit-species" name="species" type="text" required />
-        </div>
-        <div class="form-row">
-          <label for="edit-frequency">Frequency (days)</label>
-          <input id="edit-frequency" name="frequencyDays" type="number" min="1" step="1" required />
-        </div>
-        <div class="modal-actions">
-          <button type="submit">Save</button>
-          <button type="button" id="edit-cancel">Cancel</button>
-        </div>
-      </form>
-    </div>
-  </div>
+
+      <div class="form-row">
+        <label for="edit-nickname">Nickname</label>
+        <input id="edit-nickname" name="nickname" type="text" required />
+      </div>
+
+      <div class="form-row">
+        <label for="edit-species">Species</label>
+        <input id="edit-species" name="species" type="text" required />
+      </div>
+
+      <div class="form-row">
+        <label for="edit-frequency">Frequency (days)</label>
+        <input id="edit-frequency" name="frequencyDays" type="number" min="1" step="1" required />
+      </div>
+
+      <menu class="modal-actions">
+        <button type="submit" value="save">Save</button>
+        <button type="button" id="edit-cancel">Cancel</button>
+      </menu>
+    </form>
+  </dialog>
 </body>
 
 </html>

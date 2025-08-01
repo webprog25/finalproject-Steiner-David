@@ -1,5 +1,5 @@
 use plantsdb;
-db.dropDatabase()
+db.plants.drop();   //only drop plants and not already signed in users
 
 
 const owner = "geldgans@gmail.com";  // Change this to the address that you will use to log in, so that you have some plants at the beginning.
@@ -59,5 +59,14 @@ db.plants.insertMany([
     // lastWatered 8 days ago
     lastWatered: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000),
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/3/3d/Aloevera_plant.jpg"
+  },
+  {
+  owner,
+  nickname: "Spider",
+  species: "Chlorophytum comosum",
+  frequencyDays: 7,
+  // lastWatered 5 days ago
+  lastWatered: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
+  imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Chlorophytum_comosum0.jpg/450px-Chlorophytum_comosum0.jpg?20050610195414"
   }
 ]);

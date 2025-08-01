@@ -71,6 +71,7 @@ Below is a list of all third-party resources and references I used in my code, a
 - **Authentication: Sign in with Google**
   Used Googles Identity Services to handle user login. 
   Followed the CS193x lecture guidance and imported the provided googleauth.js.
+  Used the styling guide for the button that was mentioned on the website.
 
 - **Data Visualization: Chart.js**
   Imported Chart.js from jsDelivr (import "https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js") 
@@ -91,10 +92,11 @@ Below is a list of all third-party resources and references I used in my code, a
 
     Edit Plant: Modal Dialog
     Modal overlay to edit plant details in-place.
-    Source: https://developer.mozilla.org/de/docs/Web/HTML/Reference/Elements/dialog
+    Sources:  https://developer.mozilla.org/de/docs/Web/HTML/Reference/Elements/dialog
+              https://developer.mozilla.org/de/docs/Web/HTML/Reference/Elements/menu
 
     Protected Page Redirects:
-    In add.html’s <head>, an inline IIFE runs before any other code to check for the stored API key.
+    In add.html’s <head>, an inline script runs before any other code to check for the stored API key.
     This ensures unauthenticated users never see the form.
     Source: https://developer.mozilla.org/de/docs/Web/API/Location/replace
 

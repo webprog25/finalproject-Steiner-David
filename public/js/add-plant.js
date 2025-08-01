@@ -145,9 +145,7 @@ class PlantForm {
   }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  initAuthUi(handleAuthChange);
-  setupFileUploader();
-  const form = document.getElementById("plant-form");
-  if (form) new PlantForm(form);
-});
+initAuthUi(handleAuthChange);
+setupFileUploader();
+const form = document.getElementById("plant-form");
+if (form) new PlantForm(form);

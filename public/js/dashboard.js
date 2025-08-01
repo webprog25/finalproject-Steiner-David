@@ -3,13 +3,12 @@ import "https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js";
 
 let statusChart = null;
 
-const modal = document.getElementById("edit-modal");
-const form = document.getElementById("edit-form");
-const cancelBtn = document.getElementById("edit-cancel");
-
+const editDialog = document.getElementById('edit-modal');
+const form = document.getElementById('edit-form');
+const cancelBtn = document.getElementById('edit-cancel');
 
 function openEditModal(plant, onSave) {
-  modal.hidden = false;
+  editDialog.showModal();
   form.nickname.value = plant.nickname;
   form.species.value = plant.species;
   form.frequencyDays.value = plant.frequencyDays;
@@ -20,17 +19,21 @@ function openEditModal(plant, onSave) {
       species: form.species.value.trim(),
       frequencyDays: Number(form.frequencyDays.value)
     });
-    closeEditModal();
+    editDialog.close('save');
   };
 }
 
 function closeEditModal() {
-  modal.hidden = true;
+  editDialog.close();
 }
 
-cancelBtn.addEventListener("click", closeEditModal);
-modal.querySelector(".modal-backdrop")
-  .addEventListener("click", closeEditModal);
+cancelBtn.addEventListener('click', closeEditModal);
+
+editDialog.addEventListener('click', (event) => {
+  if (event.target === editDialog) {
+    closeEditModal();
+  }
+});
 
 class PlantCard {
   constructor(plant) {
@@ -292,6 +295,4 @@ async function reloadPlantsPreserveScroll() {
   requestAnimationFrame(() => window.scrollTo(0, y));
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  initAuthUi(loadPlants);
-});
+initAuthUi(loadPlants);
