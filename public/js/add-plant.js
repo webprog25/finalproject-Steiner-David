@@ -30,6 +30,12 @@ function setupFileUploader() {
     input.click();
   });
 
+  uploader.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      document.getElementById('image').click();
+    }
+  });
+
   // When a file is selected or dropped, show preview & clear button
   const showFile = (file) => {
     if (!file.type.startsWith("image/")) {

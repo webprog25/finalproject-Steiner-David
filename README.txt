@@ -61,6 +61,15 @@ Features
 - **Safe PATCH Updates**  
   The `/api/plants/:id` PATCH endpoint whitelists only `nickname`, `species`, `frequencyDays`, and `lastWatered`, preventing malicious updates to other fields.
 
+- **Skip-to-Content Links**  
+  Every page has a “Skip to main content” link (shown only when focused) so keyboard-only users can jump straight past the navigation.
+
+- **Visible Focus Outlines**  
+  All focusable elements (links, buttons, form fields) have a clear outline on focus, to make keyboard navigation obvious.
+
+- **ARIA Landmarks**  
+  Added `role="banner"`, `role="navigation"` and `role="main"` to the HTML structure so screen-readers can quickly understand page regions.
+
 Collaboration and libraries
 ---------------------------
 
@@ -124,6 +133,10 @@ Below is a list of all third-party resources and references I used in my code, a
     The `/api/plants/:id` PATCH endpoint whitelists only allowed fields (`nickname`, `species`, `frequencyDays`, `lastWatered`), preventing malicious owner-overwrites.
     Source: https://blog.appsignal.com/2024/07/03/security-best-practices-for-your-nodejs-application.html
 
+    Accessibility Enhancements:
+    Sources:  https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles/main_role
+              https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-label
+              https://developer.mozilla.org/en-US/docs/Web/Accessibility
 
     The idea behind the "cards" may seem similar to Frank Schneider's and my own project, "PokeBuild", from 
     the "WebProjekt" course.

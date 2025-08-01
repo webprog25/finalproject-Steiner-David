@@ -353,6 +353,16 @@ main {
   outline: none;
 }
 
+button.btn-edit,
+button.btn-delete {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: inline-block;
+  cursor: pointer;
+}
+
 .add-button {
   display: inline-block;
   margin: 2rem auto 0;
@@ -614,6 +624,38 @@ menu.modal-actions button#edit-cancel {
 menu.modal-actions button#edit-cancel:hover,
 menu.modal-actions button#edit-cancel:focus {
   background-color: #999;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  padding: 8px;
+  background: #000;
+  color: #fff;
+  text-decoration: none;
+  z-index: 1000;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* Always-visible focus outline for keyboard users */
+:focus {
+  outline: 3px solid #005fcc;
+  outline-offset: 2px;
 }
 
 /* Tablet: 2 columns */

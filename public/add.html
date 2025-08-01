@@ -24,8 +24,9 @@
 </head>
 
 <body>
-  <header>
-    <nav class="site-nav">
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <header role="banner">
+    <nav class="site-nav" role="navigation">
       <a href="index.html" class="nav-logo">Plant Pal</a>
       <div id="google-signin"></div>
       <button id="logout-btn" hidden>Log out</button>
@@ -34,7 +35,7 @@
       </div>
     </nav>
   </header>
-  <main>
+  <main id="main-content" role="main">
     <form id="plant-form" class="add-form">
       <div class="form-row">
         <label for="nickname">Nickname</label>
@@ -49,11 +50,11 @@
         <input id="frequency" name="frequency" type="number" min="1" step="1" required />
       </div>
       <div class="form-row">
-        <label>Image</label>
-        <div class="file-uploader" id="file-uploader">
+        <label for="image" class="sr-only">Upload plant image</label>
+        <div id="file-uploader" class="file-uploader" role="button" tabindex="0" aria-labelledby="image-uploader-label">
+          <span id="image-uploader-label">Drop image here or click to select</span>
           <button type="button" class="btn-clear" title="Clear selection" hidden>✕</button>
-          <p>Drop image here or click to select</p>
-          <img id="file-preview" src="" alt="" hidden />
+          <img id="file-preview" src="" alt="Selected plant image preview" hidden />
           <input id="image" name="image" type="file" accept="image/*" hidden />
         </div>
       </div>

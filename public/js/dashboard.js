@@ -67,15 +67,26 @@ class PlantCard {
 
     const actionsTop = document.createElement("div");
     actionsTop.className = "card-actions-top";
-    const editImg = document.createElement("img");
-    editImg.src = "icons/edit.svg";
-    editImg.className = "btn-edit";
-    editImg.title = "Edit";
-    const delImg = document.createElement("img");
-    delImg.src = "icons/delete.svg";
-    delImg.className = "btn-delete";
-    delImg.title = "Delete";
-    actionsTop.append(editImg, delImg);
+
+    const editBtn = document.createElement("button");
+    editBtn.type = "button";
+    editBtn.className = "btn-edit";
+    editBtn.setAttribute("aria-label", "Edit plant");
+    const editIcon = document.createElement("img");
+    editIcon.src = "icons/edit.svg";
+    editIcon.alt = ""; 
+    editBtn.appendChild(editIcon);
+
+    const delBtn = document.createElement("button");
+    delBtn.type = "button";
+    delBtn.className = "btn-delete";
+    delBtn.setAttribute("aria-label", "Delete plant");
+    const delIcon = document.createElement("img");
+    delIcon.src = "icons/delete.svg";
+    delIcon.alt = ""; 
+    delBtn.appendChild(delIcon);
+
+    actionsTop.append(editBtn, delBtn);
     article.appendChild(actionsTop);
 
     // Plant image
